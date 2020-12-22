@@ -1,13 +1,12 @@
-import "./App.css";
-import { ThemeProvider, Typography } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import HomePaper from "./components/HomePaper"
+import HomePage from "./components/pages/HomePage"
+
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Typography color='primary'>Jammit App</Typography>
-      <HomePaper></HomePaper>
+      <HomePage></HomePage>
     </ThemeProvider>
   );
 }
