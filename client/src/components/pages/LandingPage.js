@@ -7,7 +7,6 @@ import {
 } from "../../config";
 import { Link as RouterLink } from "react-router-dom";
 import { Typography, Paper, Link, makeStyles } from "@material-ui/core";
-import { connect } from "react-redux";
 
 const styles = makeStyles((theme) => ({
   background: {
@@ -30,8 +29,8 @@ const styles = makeStyles((theme) => ({
     maxWidth: "100%",
   },
   "@keyframes color-change": {
-    "0%": { color: theme.palette.home.main },
-    "50%": { color: theme.palette.home.primary },
+    "0%": { color: theme.palette.home.primary },
+    "50%": { color: theme.palette.home.main },
     "100%": { color: theme.palette.home.secondary },
   },
   appName: {
@@ -69,8 +68,8 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const LandingPage = (props) => {
-  const { loggedInUser } = props;
+const LandingPage = () => {
+  
   const classes = styles();
   return (
     <div className={classes.background}>
@@ -90,7 +89,6 @@ const LandingPage = (props) => {
             {"Jammit"}
           </Typography>
         </div>
-        {!loggedInUser && (
           <Link
             id="landing-page-link"
             component={RouterLink}
@@ -99,16 +97,10 @@ const LandingPage = (props) => {
           >
             Login
           </Link>
-        )}
       </Paper>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggedInUser: state.currentUser,
-  };
-};
 
-export default connect(mapStateToProps, null)(LandingPage);
+export default LandingPage;

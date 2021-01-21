@@ -14,6 +14,7 @@ const theme = createMuiTheme({
     },
     onPrimary: {
       main: "#000000",
+      nav: "#5a5a5a"
     },
     onSecundary: {
       main: "#000000",
@@ -25,6 +26,11 @@ const theme = createMuiTheme({
     },
   },
   typography: {
+    h3: {
+      fontFamily: ["Rubik"],
+      fontWeight: 700,
+      textShadow: "3px 1px #000000",
+    },
     h2: {
       fontFamily: ["Rubik"],
       fontWeight: 700,

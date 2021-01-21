@@ -10,7 +10,7 @@ const store = createStore(
   registerReducer,
   compose(
     applyMiddleware(thunk),
-    //composeWithDevTools()
+    composeWithDevTools()
   )
   
 ); //rootReducer

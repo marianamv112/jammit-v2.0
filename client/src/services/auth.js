@@ -21,7 +21,7 @@ export const loggedin = () => {
 export const login = (username, password) => {
   return axios
     .post(API_URL + "/auth/login", { username, password }, { withCredentials: true })
-    .then((response) => {console.log("res:", response.data, response.data.username); return response.data})
+    .then((response) =>  response.data)
 };
 
 export const logout = () => {

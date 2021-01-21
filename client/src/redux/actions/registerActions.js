@@ -1,9 +1,8 @@
 import {
   verifyUser,
-  loggedin,
   login,
-  logout,
   signup,
+  logout
 } from "../../services/auth";
 
 export const registerUser = (username, email, password) => {
@@ -24,19 +23,6 @@ export const registerUser = (username, email, password) => {
           });
         });
     }
-  };
-};
-
-export const setCurrentUser = () => {
-  return (dispatch) => {
-    dispatch({ type: "LOADING" });
-    loggedin()
-      .then((response) => {
-        dispatch({ type: "SET_USER", currentUser: response });
-      })
-      .catch((err) => {
-        dispatch({ type: "SET_USER", currentUser: null });
-      });
   };
 };
 
@@ -65,16 +51,40 @@ export const loginUser = (username, password) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
     login(username, password)
-      .then((response) =>
+      .then((response) => {
         dispatch({
           type: "SET_USER",
           username: response.username,
           loading: false,
           pendingUser: null,
-        })
-      )
+        });
+      })
       .catch((err) => {
         dispatch({ type: "SET_USER", currentUser: null });
+        dispatch({
+          loading: false,
+          pendingUser: null,
+          type: "SET_ERROR",
+          error: true,
+          message: err.response.data.message,
+        });
+      });
+  };
+};
+
+export const logoutUser = () => {
+  return (dispatch) => {
+    dispatch({ type: "LOADING" });
+    logout()
+      .then((response) => {
+        dispatch({
+          type: "SET_USER",
+          currentUser: null,
+          loading: false,
+          pendingUser: null,
+        });
+      })
+      .catch((err) => {
         dispatch({
           loading: false,
           pendingUser: null,
@@ -94,8 +104,8 @@ export const cleanError = () => {
 
 export default {
   validateUser,
-  setCurrentUser,
   loginUser,
   cleanError,
   registerUser,
+  logoutUser,
 };
