@@ -6,8 +6,14 @@ import LoginPage from "./components/pages/LoginPage";
 import SignUpPage from "./components/pages/SignUpPage";
 import { connect } from "react-redux";
 import WelcomePage from "./components/pages/WelcomePage";
-import MainPage from "./components/pages/MainPage";
-
+import Profile from "./components/pages/Profile";
+import EditProfile from "./components/pages/EditProfile";
+import Navbar from "./components/Navbar";
+import UserEvents from "./components/pages/UserEvents";
+import NewEvent from "./components/pages/NewEvent";
+import EditEvent from "./components/pages/EditEvent"
+import ViewEvent from "./components/pages/ViewEvent"
+import MapView from "./components/pages/MapView"
 
 function App({ loggedInUser }) {
   return (
@@ -18,12 +24,21 @@ function App({ loggedInUser }) {
           <Route
             exact
             path="/login"
-            render={() => (loggedInUser ? <Redirect to="/main" /> : <LoginPage />)}
-          />
+            render={() =>
+              loggedInUser ? <Redirect to="/profile" /> : <LoginPage />
+            }
+          /> 
           <Route path="/signup" component={SignUpPage} />
-          <Route path="/main" component={MainPage} />
           <Route path="/confirm/:confirmationCode" component={WelcomePage} />
+          <Route path="/profile" render={() => loggedInUser ? <Profile/> : <Redirect to="/" />}/>
+          <Route path="/edit-profile" render={() => loggedInUser ? <EditProfile/> : <Redirect to="/" />}/>
+          <Route path="/user-events/:userId" render={() => loggedInUser ? <UserEvents/> : <Redirect to="/" />}/>
+          <Route path="/new-event" render={() => loggedInUser ? <NewEvent/> : <Redirect to="/" />}/>
+          <Route path="/edit-event/:eventId" render={() => loggedInUser ? <EditEvent/> : <Redirect to="/" />}/>
+          <Route path="/view-event/:eventId" render={() => loggedInUser ? <ViewEvent/> : <Redirect to="/" />}/>
+          <Route path="/view-map" render={() => loggedInUser ? <MapView/> : <Redirect to="/" />}/>
         </Switch>
+       { loggedInUser && <Navbar />}
       </ThemeProvider>
     </>
   );

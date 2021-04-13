@@ -21,14 +21,14 @@ authRoutes.post("/signup", (req, res, next) => {
     return;
   }
 
-  User.findOne({ username }, (err, foundUser) => {
+  User.findOne({ email }, (err, foundUser) => {
     if (err) {
       res.status(500).json({ message: "Something went wrong" });
       return;
     }
 
     if (foundUser) {
-      res.status(400).json({ message: "Username taken. Choose another one." });
+      res.status(400).json({ message: "Email taken. Choose another one." });
       return;
     }
 
@@ -70,7 +70,6 @@ authRoutes.post("/signup", (req, res, next) => {
 
 authRoutes.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, theUser, failureDetails) => {
-    
     if (err) {
       res
         .status(500)

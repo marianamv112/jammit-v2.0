@@ -7,7 +7,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import ActionButton from "../ActionButton";
-import UsernameField from "../UsernameField";
+import EmailField from "../EmailField";
 import {
   desktop_viewport,
   tablet_viewport,
@@ -43,30 +43,32 @@ const LoginPage = ({
   cleanError,
   errorMessage,
 }) => {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [missingUsername, setMissingUsername] = useState(false);
   const [missingPassword, setMissingPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [missingEmail, setMissingEmail] = useState(false);
 
-  const handleUsername = (username) => {
-    setUsername(username);
+
+  const handleEmail = (email) => {
+    setEmail(email);
   };
 
   const handlePassword = (password) => {
     setPassword(password);
   };
 
-  const setUser = (username, password) => {
-    if (!username) {
-      setMissingUsername(true);
+  const setUser = (email, password) => {
+    
+    if (!email) {
+      setMissingEmail(true);
     }
 
     if (!password) {
       setPassword(true);
     }
 
-    if (username && password) {
-      loginUser(username, password);
+    if (email && password) {
+      loginUser(email, password);
     }
   };
 
@@ -85,12 +87,12 @@ const LoginPage = ({
         alignItems="center"
         className={classes.textFieldsContainer}
       >
-        <UsernameField
-          value={username}
-          onChange={(e) => handleUsername(e.target.value)}
-          error={missingUsername}
+        <EmailField
+          value={email}
+          onChange={(e) => handleEmail(e.target.value)}
+          errorValues={missingEmail && "missingEmail"}
           onClick={() => {
-            setMissingUsername(false);
+            setMissingEmail(false);
             cleanError();
           }}
         />
@@ -118,7 +120,7 @@ const LoginPage = ({
             <ActionButton
               disabled={error}
               text={"Login"}
-              onClick={() => setUser(username, password)}
+              onClick={() => setUser(email, password)}
             />
             <Typography variant="caption">
               {"Don't have an account? "}

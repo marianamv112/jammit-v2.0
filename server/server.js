@@ -6,6 +6,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const eventRoutes = require('./routes/events')
 const cors = require('cors');
 require('./config/passport');
 
@@ -45,6 +47,8 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/events', eventRoutes);
 
 
 // For any routes that starts with "/api", catch 404 and forward to error handler

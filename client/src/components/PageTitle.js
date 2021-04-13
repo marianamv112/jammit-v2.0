@@ -15,7 +15,7 @@ const styles = makeStyles((theme) => ({
           width: "50%",
         },
         [`@media (min-width: ${desktop_viewport}px)`]: {
-          width: "40%",
+          width: "100%",
         },
       },
 }))

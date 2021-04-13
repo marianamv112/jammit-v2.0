@@ -47,14 +47,19 @@ export const validateUser = (code) => {
   };
 };
 
-export const loginUser = (username, password) => {
+export const loginUser = (email, password) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    login(username, password)
+    login(email, password)
       .then((response) => {
         dispatch({
           type: "SET_USER",
+          id: response._id,
           username: response.username,
+          bio: response.bio,
+          instruments: response.instruments,
+          profilePicture: response.profilePicture,
+          socialMedia: response.socialMedia,
           loading: false,
           pendingUser: null,
         });

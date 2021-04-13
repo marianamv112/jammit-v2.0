@@ -1,5 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import { mobile_viewport, tablet_viewport, desktop_viewport } from "../config";
+import { CardMedia } from "@material-ui/core";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -7,20 +9,32 @@ const styles = makeStyles((theme) => ({
   },
   main: {
     top: "-10%",
-    left: "20%",
-    width: "60%",
     minWidth: "150px",
     height: "0",
     backgroundColor: "aliceblue",
-    borderRadius: "50%",
     position: "absolute",
-    paddingBottom: "60%",
+    borderRadius: "50%",
+    paddingBottom: "45%",
+      width: "45%",
+    [`@media (min-width: ${desktop_viewport}px)`]: {
+      left: "27%",
+    },
+    [`@media (max-width: ${tablet_viewport}px)`]: {
+      left: "25%",
+    },
+    [`@media (max-width: ${mobile_viewport}px)`]: {
+      left: "28%",
+    },
   },
 }));
 
-const ProfilePic = () => {
+const ProfilePic = ({image}) => {
   const classes = styles();
-  return <div className={classes.main}></div>;
+  return (
+    <CardMedia image={image} className={classes.main} />
+  );
 };
+
+
 
 export default ProfilePic;

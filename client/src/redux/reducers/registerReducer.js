@@ -15,8 +15,13 @@ const setReducer = (state = defaultState, action) => {
         ...state,
         user: {
           loading: false,
-          currentUser: {
+          currentUser: { 
+            id: action.id,
             username: action.username,
+            bio: action.bio,
+            instruments: action.instruments,
+            profilePicture: action.profilePicture,
+            socialMedia: action.socialMedia
           },
         },
       };

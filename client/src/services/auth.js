@@ -14,13 +14,13 @@ export const signup = (username, email, password) => {
 export const loggedin = () => {
   return axios
     .get(API_URL + "/auth/loggedin", { withCredentials: true })
-    .then((response) => response.data)
+    .then((response) =>  response.data)
     
 };
 
-export const login = (username, password) => {
+export const login = (email, password) => {
   return axios
-    .post(API_URL + "/auth/login", { username, password }, { withCredentials: true })
+    .post(API_URL + "/auth/login", { email, password }, { withCredentials: true })
     .then((response) =>  response.data)
 };
 

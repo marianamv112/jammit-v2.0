@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.onPrimary.main,
     backgroundColor: theme.palette.primary.main,
     width: '50%',
-    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'
+    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+    alignSelf: "center",
   },
 }));
 
