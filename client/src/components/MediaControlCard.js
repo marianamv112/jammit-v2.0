@@ -50,12 +50,12 @@ const MediaControlCard = (props) => {
         <CardMedia
           className={classes.cover}
           image={event.eventPicture}
-          title={event.title}
+          title={event.title ? event.title : event.name}
         />
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography variant="subtitle1">{event.title}</Typography>
-            <Typography variant="subtitle1">{event.location}</Typography>
+            <Typography variant="subtitle1">{event.title ? event.title : event.name}</Typography>
+            <Typography variant="subtitle1">{event.location ? event.location : event.formatted_address}</Typography>
             <Typography variant="subtitle1">{event.place}</Typography>
           </CardContent>
         </div>

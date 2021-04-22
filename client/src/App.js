@@ -11,9 +11,11 @@ import EditProfile from "./components/pages/EditProfile";
 import Navbar from "./components/Navbar";
 import UserEvents from "./components/pages/UserEvents";
 import NewEvent from "./components/pages/NewEvent";
-import EditEvent from "./components/pages/EditEvent"
-import ViewEvent from "./components/pages/ViewEvent"
-import MapView from "./components/pages/MapView"
+import EditEvent from "./components/pages/EditEvent";
+import ViewEvent from "./components/pages/ViewEvent";
+import MapView from "./components/pages/MapView";
+import EventListView from "./components/pages/EventListView"
+
 
 function App({ loggedInUser }) {
   return (
@@ -27,18 +29,45 @@ function App({ loggedInUser }) {
             render={() =>
               loggedInUser ? <Redirect to="/profile" /> : <LoginPage />
             }
-          /> 
+          />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/confirm/:confirmationCode" component={WelcomePage} />
-          <Route path="/profile" render={() => loggedInUser ? <Profile/> : <Redirect to="/" />}/>
-          <Route path="/edit-profile" render={() => loggedInUser ? <EditProfile/> : <Redirect to="/" />}/>
-          <Route path="/user-events/:userId" render={() => loggedInUser ? <UserEvents/> : <Redirect to="/" />}/>
-          <Route path="/new-event" render={() => loggedInUser ? <NewEvent/> : <Redirect to="/" />}/>
-          <Route path="/edit-event/:eventId" render={() => loggedInUser ? <EditEvent/> : <Redirect to="/" />}/>
-          <Route path="/view-event/:eventId" render={() => loggedInUser ? <ViewEvent/> : <Redirect to="/" />}/>
-          <Route path="/view-map" render={() => loggedInUser ? <MapView/> : <Redirect to="/" />}/>
+          <Route
+            path="/profile"
+            render={() => (loggedInUser ? <Profile /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/edit-profile"
+            render={() =>
+              loggedInUser ? <EditProfile /> : <Redirect to="/" />
+            }
+          />
+          <Route
+            path="/user-events/:userId"
+            render={() => (loggedInUser ? <UserEvents /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/new-event"
+            render={() => (loggedInUser ? <NewEvent /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/edit-event/:eventId"
+            render={() => (loggedInUser ? <EditEvent /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/view-event/:eventId"
+            render={() => (loggedInUser ? <ViewEvent /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/view-map"
+            render={() => (loggedInUser ? <MapView /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/view-events-list"
+            render={() => (loggedInUser ? <EventListView /> : <Redirect to="/" />)}
+          />
         </Switch>
-       { loggedInUser && <Navbar />}
+        {loggedInUser && <Navbar />}
       </ThemeProvider>
     </>
   );

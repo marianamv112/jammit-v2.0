@@ -11,6 +11,8 @@ import PageTitle from "../PageTitle";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
 import { updateEvent, getSingleEvent } from "../../services/events";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux"
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -65,16 +67,19 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const EditEvent = () => {
+const EditEvent = ({ currentUser }) => {
   const classes = styles();
   const [eventTitle, setEventTitle] = useState("");
   const [missingEventTitle, setMissingEventTitle] = useState(false);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [missingLocation, setMissingLocation] = useState(false);
   const [place, setPlace] = useState("");
+  const [missingPlace, setMissingPlace] = useState(false);
   const [instruments, setInstruments] = useState([""]);
   const [imageURL, setImageURL] = useState("");
   const eventId = window.location.pathname.split("/edit-event/")[1];
+  const history = useHistory();
 
   useEffect(() => {
     getSingleEvent(eventId).then((res) => {
@@ -131,28 +136,43 @@ const EditEvent = () => {
   };
 
   const editEvent = () => {
-    const formData = new FormData();
-    if (imageURL) {
-      formData.append("file", imageURL, `eventPic-${eventTitle}`);
+    if (!eventTitle) {
+      setMissingEventTitle(true);
     }
-    if (eventTitle) {
+
+    if (!place) {
+      setMissingPlace(true);
+    }
+
+    if (!location) {
+      setMissingLocation(true);
+    }
+
+    if (eventTitle && place && location) {
+      const formData = new FormData();
       formData.append("title", eventTitle);
-    }
-    if (description) {
-      formData.append("description", description);
-    }
-    if (location) {
       formData.append("location", location);
-    }
-    if (place) {
       formData.append("place", place);
+
+      if (imageURL) {
+        formData.append("file", imageURL, `eventPic-${eventTitle}`);
+      }
+
+      if (description) {
+        formData.append("description", description);
+      }
+
+      if (instruments) {
+        instruments.forEach((instrument) =>
+          formData.append("instruments", instrument)
+        );
+      }
+      updateEvent(eventId, formData).then((res) => {
+        if (res.status === 200) {
+          history.push(`/user-events/${currentUser.id}`);
+        }
+      });
     }
-    if (instruments) {
-      instruments.forEach((instrument) =>
-        formData.append("instruments", instrument)
-      );
-    }
-    updateEvent(eventId, formData);
   };
 
   return (
@@ -177,6 +197,7 @@ const EditEvent = () => {
           onChange={(e) => handleEventTitle(e.target.value)}
           className={clsx(classes.textField, "event-title-input")}
           error={missingEventTitle}
+          helperText={missingEventTitle && "This field is required"}
           placeholder={"Late night jam"}
           onClick={() => {
             setMissingEventTitle(false);
@@ -236,6 +257,9 @@ const EditEvent = () => {
           onChange={(e) => handlePlace(e.target.value)}
           className={clsx(classes.textField, "place-create-event-input")}
           placeholder={"Berlin"}
+          error={missingPlace}
+          helperText={missingPlace && "This field is required"}
+          onClick={() => setMissingPlace(false)}
           InputProps={{
             className: classes.input,
             maxLength: 20,
@@ -252,6 +276,9 @@ const EditEvent = () => {
           onChange={(e) => handleLocation(e.target.value)}
           className={clsx(classes.textField, "location-create-event-input")}
           placeholder={"Berlin"}
+          error={missingLocation}
+          helperText={missingLocation && "This field is required"}
+          onClick={() => setMissingLocation(false)}
           InputProps={{
             className: classes.input,
             maxLength: 20,
@@ -334,5 +361,10 @@ const EditEvent = () => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.user.currentUser
+  }
+}
 
-export default EditEvent;
+export default connect(mapStateToProps, null)(EditEvent);

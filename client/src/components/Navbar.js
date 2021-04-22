@@ -68,7 +68,7 @@ const Navbar = () => {
 
       <BottomNavigationAction
         component={Link}
-        to="/login"
+        to="/view-events-list"
         classes={{ selected: classes.navlinks }}
         label="Events"
         icon={

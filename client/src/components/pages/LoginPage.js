@@ -9,9 +9,7 @@ import {
 import ActionButton from "../ActionButton";
 import EmailField from "../EmailField";
 import {
-  desktop_viewport,
   tablet_viewport,
-  mobile_viewport,
 } from "../../config";
 import PasswordField from "../PasswordField";
 import PageTitle from "../PageTitle";
@@ -22,15 +20,24 @@ import { bindActionCreators } from "redux";
 import InfoText from "../InfoText";
 
 const styles = () => ({
-  textFieldsContainer: {
-    [`@media (min-width: ${mobile_viewport}px)`]: {
-      width: "80%",
+  mainContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+      marginTop: "1em",
     },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      width: "50%",
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      width: "40%",
+    marginTop: 10,
+    marginBottom: 70,
+  },
+  container: {
+    height: "fit-content",
+    display: "flex",
+    justifyContent: "space-between",
+    minWidth: 365,
+    [`@media (max-width: ${tablet_viewport}px)`]: {
+      minWidth: 300
     },
   },
 });
@@ -48,7 +55,6 @@ const LoginPage = ({
   const [email, setEmail] = useState("");
   const [missingEmail, setMissingEmail] = useState(false);
 
-
   const handleEmail = (email) => {
     setEmail(email);
   };
@@ -58,7 +64,6 @@ const LoginPage = ({
   };
 
   const setUser = (email, password) => {
-    
     if (!email) {
       setMissingEmail(true);
     }
@@ -79,13 +84,16 @@ const LoginPage = ({
       alignItems="center"
       justifyContent="space-evenly"
       minHeight={460}
+      className={classes.mainContainer}
     >
-      <PageTitle title={"Welcome Back"} />
+      <Box className={classes.container}>
+        <PageTitle title={"Welcome Back"} />
+      </Box>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
-        className={classes.textFieldsContainer}
+        className={classes.container}
       >
         <EmailField
           value={email}
@@ -124,11 +132,12 @@ const LoginPage = ({
             />
             <Typography variant="caption">
               {"Don't have an account? "}
-              <Link 
-              id="login-signup-link"
-              component={RouterLink} 
-              to="/signup" 
-              variant="body2">
+              <Link
+                id="login-signup-link"
+                component={RouterLink}
+                to="/signup"
+                variant="body2"
+              >
                 {"Sign up"}
               </Link>
             </Typography>

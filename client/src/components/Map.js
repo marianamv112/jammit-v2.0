@@ -1,52 +1,87 @@
-import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
-import { useEffect, useState } from "react";
-import { getSightings } from "../services/map-routes";
+import React, { useState } from "react";
+import GoogleMapReact from "google-map-react";
+import { Box, makeStyles, IconButton } from "@material-ui/core";
+import { mobile_viewport, tablet_viewport, desktop_viewport } from "../config";
+import SearchBar from "material-ui-search-bar";
+import eventListIcon from "../assets/icons/events_list.png";
+import lisbon_places from "../assets/places/places";
+import LocationPin from "../components/LocationPin";
+import { Link } from "react-router-dom";
 
-const mapStyle = {
-  width: "50%",
-  height: "100%",
-  position: "relative",
+
+const location = {
+  address: "Lisbon",
+  lat: 38.7071,
+  lng: -9.13549,
 };
 
-const containerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  marginTop: 10,
-  width: "100%",
-  height: "50%",
-};
+const styles = makeStyles((theme) => ({
+  googleMap: {
+    [`@media (max-width: ${desktop_viewport}px)`]: {
+      width: 620,
+      height: "92vh",
+    },
+    position: "relative",
+    width: 620,
+    height: "80vh",
+  },
+  searchBar: {
+    position: "absolute",
+    top: 15,
+    left: 15,
+  },
+  iconButton: {
+    width: 40,
+  },
+  iconImage: {
+    maxWidth: "100%",
+  },
+}));
 
-const MapPage = (props) => {
-  const [markers, setMarkers] = useState([]);
-
-  useEffect(() => {
-    getSightings().then((sightings) => {
-      setMarkers(sightings);
-    });
-  }, []);
+const Map = () => {
+  const [jamSessions, setJamSessions] = useState(lisbon_places);
+  const classes = styles();
 
   return (
-    <Map
-      google={props.google}
-      zoom={6}
-      initialCenter={{ lat: 35.378389, lng: -97.517313 }}
-      style={mapStyle}
-      containerStyle={containerStyle}
-    >
-      {markers.map((marker, index) => (
-        <Marker
-          key={index}
-          name={marker.title}
-          position={{
-            lat: marker.location.coordinates[1],
-            lng: marker.location.coordinates[0],
-          }}
-        />
-      ))}
-    </Map>
+    <Box className={classes.googleMap}>
+      <GoogleMapReact
+        bootstrapURLKeys={{
+          key: process.env.REACT_APP_API_KEY,
+        }}
+        defaultCenter={location}
+        defaultZoom={17}
+      >
+        {jamSessions &&
+          jamSessions.map((place) => (
+            <LocationPin
+              key={place.place_id}
+              lat={place.geometry.location.lat}
+              lng={place.geometry.location.lng}
+              text={place.name}
+            />
+          ))}
+      </GoogleMapReact>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        className={classes.searchBar}
+      >
+        <SearchBar />
+        <IconButton
+          component={Link}
+          to={"/view-events-list"}
+          className={classes.iconButton}
+        >
+          <img
+            src={eventListIcon}
+            alt="events-list-icon"
+            className={classes.iconImage}
+          />
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 
-export default GoogleApiWrapper((props) => ({
-  apiKey: process.env.REACT_APP_API_KEY,
-}))(MapPage);
+export default Map;

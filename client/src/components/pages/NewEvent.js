@@ -15,6 +15,7 @@ import clsx from "clsx";
 import ActionButton from "../ActionButton";
 import { updateUser } from "../../redux/actions/userActions";
 import { createNewEvent } from "../../services/events";
+import { useHistory } from "react-router-dom";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -69,15 +70,18 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const NewEvent = () => {
+const NewEvent = ({ currentUser }) => {
   const classes = styles();
   const [eventTitle, setEventTitle] = useState("");
   const [missingEventTitle, setMissingEventTitle] = useState(false);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [missingLocation, setMissingLocation] = useState(false);
   const [place, setPlace] = useState("");
+  const [missingPlace, setMissingPlace] = useState(false);
   const [instruments, setInstruments] = useState([""]);
   const [imageURL, setImageURL] = useState("");
+  const history = useHistory();
 
   const handleEventTitle = (eventTitle) => {
     setEventTitle(eventTitle);
@@ -123,28 +127,45 @@ const NewEvent = () => {
   };
 
   const createEvent = () => {
-    const formData = new FormData();
-    if (imageURL) {
-      formData.append("file", imageURL, `eventPic-${eventTitle}`);
+    if (!eventTitle) {
+      setMissingEventTitle(true);
     }
-    if (eventTitle) {
+
+    if (!place) {
+      setMissingPlace(true);
+    }
+
+    if (!location) {
+      setMissingLocation(true);
+    }
+
+    if (eventTitle && place && location) {
+      const formData = new FormData();
+
       formData.append("title", eventTitle);
-    }
-    if (description) {
-      formData.append("description", description);
-    }
-    if (location) {
-      formData.append("location", location);
-    }
-    if (place) {
       formData.append("place", place);
+      formData.append("location", location);
+
+      if (imageURL) {
+        formData.append("file", imageURL, `eventPic-${eventTitle}`);
+      }
+
+      if (description) {
+        formData.append("description", description);
+      }
+
+      if (instruments) {
+        instruments.forEach((instrument) =>
+          formData.append("instruments", instrument)
+        );
+      }
+
+      createNewEvent(formData).then((res) => {
+        if (res.status === 200) {
+          history.push(`/user-events/${currentUser.id}`);
+        }
+      });
     }
-    if (instruments) {
-      instruments.forEach((instrument) =>
-        formData.append("instruments", instrument)
-      );
-    }
-    createNewEvent(formData);
   };
 
   return (
@@ -169,6 +190,7 @@ const NewEvent = () => {
           onChange={(e) => handleEventTitle(e.target.value)}
           className={clsx(classes.textField, "event-title-input")}
           error={missingEventTitle}
+          helperText={missingEventTitle && "This field is required"}
           placeholder={"Late night jam"}
           onClick={() => {
             setMissingEventTitle(false);
@@ -227,7 +249,10 @@ const NewEvent = () => {
           value={place}
           onChange={(e) => handlePlace(e.target.value)}
           className={clsx(classes.textField, "place-create-event-input")}
-          placeholder={"Berlin"}
+          placeholder={"Da Club"}
+          error={missingPlace}
+          helperText={missingPlace && "This field is required"}
+          onClick={() => setMissingPlace(false)}
           InputProps={{
             className: classes.input,
             maxLength: 20,
@@ -244,6 +269,11 @@ const NewEvent = () => {
           onChange={(e) => handleLocation(e.target.value)}
           className={clsx(classes.textField, "location-create-event-input")}
           placeholder={"Berlin"}
+          error={missingLocation}
+          helperText={missingLocation && "This field is required"}
+          onClick={() => {
+            setMissingLocation(false);
+          }}
           InputProps={{
             className: classes.input,
             maxLength: 20,

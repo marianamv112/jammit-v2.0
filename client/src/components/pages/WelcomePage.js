@@ -19,17 +19,25 @@ import {
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
-
 const styles = () => ({
-  textFieldsContainer: {
-    [`@media (min-width: ${mobile_viewport}px)`]: {
-      width: "80%",
+  mainContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
+      marginTop: "1em",
     },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      width: "50%",
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      width: "40%",
+    marginTop: 10,
+    marginBottom: 70,
+  },
+  container: {
+    height: "fit-content",
+    display: "flex",
+    justifyContent: "space-between",
+    width: 365,
+    [`@media (max-width: ${mobile_viewport}px)`]: {
+      width: 300,
     },
   },
 });
@@ -53,19 +61,20 @@ const WelcomePage = ({
       alignItems="center"
       justifyContent="space-evenly"
       minHeight={460}
+      className={classes.mainContainer}
     >
       {loading ? (
         <CircularProgress />
       ) : error ? (
         <>
-          <PageTitle
-            title={"Something is wrong"}
-          />
+          <Box className={classes.container}>
+            <PageTitle title={"Something is wrong"} />
+          </Box>
           <Box
             display="flex"
             flexDirection="column"
             alignItems="center"
-            className={classes.textFieldsContainer}
+            className={classes.mainContainer}
           >
             <InfoText
               visible={true}
@@ -81,14 +90,19 @@ const WelcomePage = ({
           flexDirection="column"
           alignItems="center"
           style={{ width: "100%" }}
+          className={classes.mainContainer}
         >
-          <PageTitle title={"Account Verified. Welcome!"} />
-          <Typography variant="caption" className={classes.textFieldsContainer}>
-            {"You can now successfully "}
-            <Link component={RouterLink} to="/login" variant="body2">
-              {"Login"}
-            </Link>
-          </Typography>
+          <Box display="flex" flexDirection="column" className={classes.container}>
+            <PageTitle title={"Account Verified. Welcome!"} />
+            <Typography
+              variant="caption"
+            >
+              {"You can now successfully "}
+              <Link component={RouterLink} to="/login" variant="body2">
+                {"Login"}
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       )}
     </Box>

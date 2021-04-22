@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  makeStyles,
-  Typography,
-  IconButton,
-  ButtonBase,
-} from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
   mobile_viewport,
@@ -16,8 +10,8 @@ import addEventIcon from "../../assets/icons/plus.png";
 import editEventIcon from "../../assets/icons/pencil_icon.png";
 import SearchBar from "material-ui-search-bar";
 import MediaControlCard from "../MediaControlCard";
-import { getUserEvents } from "../../services/events";
-import { connect } from "react-redux";
+import lisbon_places from "../../assets/places/places";
+import MapIcon from "../../assets/icons/placeholder-in-a-circle-outline.png";
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -33,7 +27,7 @@ const styles = makeStyles((theme) => ({
   },
   container: {
     height: "fit-content",
-    /* width: "30%", */
+    width: "30%",
     display: "flex",
     justifyContent: "space-between",
     [`@media (max-width: ${mobile_viewport}px)`]: {
@@ -62,24 +56,14 @@ const styles = makeStyles((theme) => ({
   editIconImage: {
     maxWidth: "50%",
   },
-  title: {
-    marginTop: 20,
-    marginBottom: 20,
-    width: "100%",
-  },
   searchBar: {
     marginBottom: 10,
   },
 }));
 
-const UserEvents = ({ currentUser }) => {
+const EventListView = () => {
   const classes = styles();
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    const userId = window.location.pathname.split("/user-events/")[1];
-    getUserEvents(userId).then((res) => setEvents(res.events));
-  }, []);
+  const [events, setEvents] = useState(lisbon_places);
 
   return (
     <Box
@@ -90,10 +74,11 @@ const UserEvents = ({ currentUser }) => {
       minHeight={200}
       className={classes.mainContainer}
     >
-      <Box display="flex" flexDirection="row" className={classes.container}>
-        <Box className={classes.title}>
-          <Typography variant="h1">{currentUser.username}'s events </Typography>
-        </Box>
+      <Box 
+      display="flex" 
+      flexDirection="row" 
+      alignItems="center"
+      className={classes.container}>
         <IconButton
           component={Link}
           to="/new-event"
@@ -105,15 +90,21 @@ const UserEvents = ({ currentUser }) => {
             className={classes.iconImage}
           />
         </IconButton>
-      </Box>
-      <Box display="flex" flexDirection="column" className={classes.container}>
         <SearchBar
           className={classes.searchBar}
           //value={this.state.value}
           //onChange={(newValue) => this.setState({ value: newValue })}
           //onRequestSearch={() => doSomethingWith(this.state.value)}
         />
-
+        <IconButton
+          component={Link}
+          to={"/view-map"}
+          className={classes.iconButton}
+        >
+          <img src={MapIcon} alt="map-icon" className={classes.iconImage}/>
+        </IconButton>
+      </Box>
+      <Box display="flex" flexDirection="column" className={classes.container}>
         {events &&
           events.map((event) => (
             <Box
@@ -123,21 +114,6 @@ const UserEvents = ({ currentUser }) => {
               key={event._id}
             >
               <MediaControlCard event={event} key={event.id} />
-
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <IconButton component={Link} to={`/edit-event/${event._id}`}>
-                  <img
-                    src={editEventIcon}
-                    alt="edit-event-icon"
-                    className={classes.editIconImage}
-                  />
-                </IconButton>
-              </Box>
             </Box>
           ))}
       </Box>
@@ -145,10 +121,4 @@ const UserEvents = ({ currentUser }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.user.currentUser,
-  };
-};
-
-export default connect(mapStateToProps, null)(UserEvents);
+export default EventListView;

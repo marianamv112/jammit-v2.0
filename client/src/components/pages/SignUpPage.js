@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Typography, Link, Box, makeStyles } from "@material-ui/core";
 import ActionButton from "../ActionButton";
 import {
-  desktop_viewport,
-  tablet_viewport,
   mobile_viewport,
   email_format,
 } from "../../config";
@@ -18,17 +16,6 @@ import { connect } from "react-redux";
 import { cleanError, registerUser } from "../../redux/actions/registerActions";
 
 const styles = makeStyles((theme) => ({
-  textFieldsContainer: {
-    [`@media (min-width: ${mobile_viewport}px)`]: {
-      width: "80%",
-    },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      width: "50%",
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      width: "40%",
-    },
-  },
   textBox: {
     backgroundColor: theme.palette.primary.info,
     width: "100%",
@@ -37,6 +24,26 @@ const styles = makeStyles((theme) => ({
     paddingTop: "0.4em",
     paddingBottom: "0.4em",
     fontFamily: ["Roboto", "sans-serif"].join(","),
+  },
+  mainContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
+      marginTop: "1em",
+    },
+    marginTop: 10,
+    marginBottom: 70,
+  },
+  container: {
+    height: "fit-content",
+    display: "flex",
+    justifyContent: "space-between",
+    width: 365,
+    [`@media (max-width: ${mobile_viewport}px)`]: {
+      width: 300
+    },
   },
 }));
 
@@ -96,13 +103,16 @@ const SignUpPage = ({
       alignItems="center"
       justifyContent="space-evenly"
       minHeight={460}
+      className={classes.mainContainer}
     >
-      <PageTitle title={"Sign up to Jammit"} />
+      <Box className={classes.container}>
+        <PageTitle title={"Sign up to Jammit"} />
+      </Box>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
-        className={classes.textFieldsContainer}
+        className={classes.container}
       >
         <UsernameField
           value={username}
@@ -136,12 +146,8 @@ const SignUpPage = ({
             cleanError();
           }}
         />
-        {error && (
-          <InfoText error content={errorMessage} />
-        )}
-        {pendingUser && (
-          <InfoText content={errorMessage} />
-        )}
+        {error && <InfoText error content={errorMessage} />}
+        {pendingUser && <InfoText content={errorMessage} />}
       </Box>
       {!pendingUser && (
         <Box

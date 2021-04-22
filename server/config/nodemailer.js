@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const templates = require("../templates/confirmation-email")
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -23,13 +24,7 @@ module.exports.sendConfirmationMail = (username, email, confirmationCode) => {
       from: `Jammit Team <${senderMail}>`, // sender address
       to: `${email}`, // list of receivers
       subject: `Jammit Account Confirmation`, // Subject line
-      html: `<h1>Email Confirmation</h1>
-        <h2>Hello ${username}</h2>
-        <p>Thank you for registering in Jammit! Please confirm your email by clicking on the following link</p>
-        <a href=${
-          process.env.CONFIRMATION_URL + confirmationCode
-        }> Click here</a>
-        </div>`,
+      html: templates.templateExample(username, process.env.CONFIRMATION_URL + confirmationCode),
     })
     .catch((err) => console.log(err));
 };

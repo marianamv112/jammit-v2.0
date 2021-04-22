@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "babel-plugin-add-react-displayname": "0.0.5",
     "cypress": "^6.2.1",
+    "google-map-react": "^2.1.9",
     "google-maps-react": "^2.0.6",
     "history": "^5.0.0",
     "logrocket": "^1.0.14",
