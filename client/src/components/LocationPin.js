@@ -8,20 +8,18 @@ const styles = makeStyles((theme) => ({
     width: 50,
   },
   pinText: {
-    
     color: "black",
-  }, 
+  },
   pinContainer: {
     maxWidth: 50,
-  }
-
+  },
 }));
 
-const LocationPin = ({ text }) => {
+const LocationPin = ({ onClick }) => {
   const classes = styles();
 
   return (
-    <Box classeName={classes.pinContainer}>
+    <Box classeName={classes.pinContainer} onClick={onClick}>
       <Icon>
         <img src={pinIcon} alt="events-list-icon" className={classes.pin} />
       </Icon>

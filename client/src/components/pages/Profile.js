@@ -17,11 +17,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 const styles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-  },
   mainContainer: {
     width: "100%",
     display: "flex",
@@ -30,60 +25,40 @@ const styles = makeStyles((theme) => ({
     [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
       marginTop: "1em",
     },
+    marginTop: 10,
+    marginBottom: 70,
   },
   homePaper: {
     position: "relative",
     background: "linear-gradient(#86BFC2 20%, #B4DBDD 87%, #FFFFFF 110%)",
     overflowWrap: "break-word",
-    //width: "27%",
     display: "flex",
-    //justifyContent: "center",
     flexDirection: "column",
     padding: "2em",
     borderRadius: 15,
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      minWidth: 270,
-      maxWidth: 384,
-      minHeight: "65vh",
+    minWidth: 300,
+    [`@media (max-width: ${tablet_viewport}px)`]: {
+      minWidth: 235
     },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      minWidth: 340,
-      maxWidth: 390,
-      minHeight: "73vh",
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      minWidth: 245,
-      maxWidth: 245,
-      minHeight: "62vh",
-    },
+    minHeight: "62vh"
   },
   iconsContainer: {
     height: "fit-content",
-    width: "30%",
     display: "flex",
     justifyContent: "space-between",
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      minWidth: 365,
+    minWidth: 365,
+    [`@media (max-width: ${tablet_viewport}px)`]: {
+      minWidth: 300
     },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      minWidth: 438,
-      maxWidth: 384,
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      minWidth: 375,
-      maxWidth: 394,
-    },
+    marginTop: 10,
   },
   iconButton: {
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      maxWidth: "2.5em",
-    },
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      maxWidth: "2.7em",
-    },
+    width: 60,
+    padding: 0,
+    margin: 10
   },
   iconImage: {
-    maxWidth: "100%",
+    width: "100%",
   },
   title: {
     fontWeight: "bold",
@@ -134,14 +109,9 @@ const styles = makeStyles((theme) => ({
   },
   username: {
     textAlign: "center",
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      marginTop: "30%",
-    },
+    marginTop: 100,
     [`@media (max-width: ${tablet_viewport}px)`]: {
-      marginTop: "0%",
-    },
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      marginTop: "35%",
+      marginTop: 70
     },
   },
 }));

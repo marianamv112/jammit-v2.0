@@ -14,6 +14,7 @@ import InfoText from "../InfoText";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { cleanError, registerUser } from "../../redux/actions/registerActions";
+import clsx from "clsx" 
 
 const styles = makeStyles((theme) => ({
   textBox: {
@@ -45,6 +46,10 @@ const styles = makeStyles((theme) => ({
       width: 300
     },
   },
+  bottomContainer: {
+    marginBottom: 20,
+    marginTop: 20
+  }
 }));
 
 const SignUpPage = ({
@@ -154,7 +159,7 @@ const SignUpPage = ({
           display="flex"
           flexDirection="column"
           alignItems="center"
-          className={classes.textFieldsContainer}
+          className={clsx(classes.container, classes.bottomContainer)}
         >
           <ActionButton
             id="signup-submit-button"

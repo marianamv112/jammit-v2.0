@@ -83,6 +83,12 @@ eventRoutes.get("/user-events/:userId", isLoggedIn, (req, res, next) => {
     .catch((err) => res.status(500).json("Something bad happened"));
 });
 
+eventRoutes.get("/", isLoggedIn, (req, res, next) => {
+  Event.find()
+    .then((events) => res.status(200).json({ events: events }))
+    .catch((err) => res.status(500).json("Something bad happened"));
+});
+
 eventRoutes.get("/single-event/:eventId", isLoggedIn, (req, res, next) => {
   const eventId = req.params.eventId;
   Event.findById(eventId)

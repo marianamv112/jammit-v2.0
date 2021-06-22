@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     border: "1px solid black",
-    minHeight: 100,
+    minHeight: 126,
     width: "100%",
   },
   details: {

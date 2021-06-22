@@ -4,10 +4,15 @@ const API_URL =
   process.env.NODE_ENV === "production" ? "/api" : "http://localhost:5000/api";
 
 export const createNewEvent = (fields) => {
-
   return axios
-    .post(API_URL + "/events//new-event", fields, { withCredentials: true })
+    .post(API_URL + "/events/new-event", fields, { withCredentials: true })
     .then((response) => response);
+};
+
+export const getEvents = () => {
+  return axios
+    .get(API_URL + "/events/", { withCredentials: true })
+    .then((response) => response.data);
 };
 
 export const getUserEvents = (userId) => {
@@ -30,4 +35,4 @@ export const updateEvent = (eventId, fieldsToUpdate) => {
     .then((response) => response);
 };
 
-export default { createNewEvent, getUserEvents, getSingleEvent, updateEvent };
+export default { createNewEvent, getEvents, getUserEvents, getSingleEvent, updateEvent };

@@ -78,24 +78,22 @@ export const loginUser = (email, password) => {
 };
 
 export const logoutUser = () => {
+  console.log("check")
   return (dispatch) => {
     dispatch({ type: "LOADING" });
     logout()
       .then((response) => {
+        console.log(response)
         dispatch({
-          type: "SET_USER",
-          currentUser: null,
-          loading: false,
-          pendingUser: null,
+          type: "LOGOUT_USER",
         });
       })
       .catch((err) => {
+        console.log("err" + err)
         dispatch({
-          loading: false,
-          pendingUser: null,
           type: "SET_ERROR",
           error: true,
-          message: err.response.data.message,
+          message: err,
         });
       });
   };

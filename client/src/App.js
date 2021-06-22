@@ -14,7 +14,8 @@ import NewEvent from "./components/pages/NewEvent";
 import EditEvent from "./components/pages/EditEvent";
 import ViewEvent from "./components/pages/ViewEvent";
 import MapView from "./components/pages/MapView";
-import EventListView from "./components/pages/EventListView"
+import EventsListView from "./components/pages/EventsListView"
+import PlacesListView from "./components/pages/PlacesListView"
 
 
 function App({ loggedInUser }) {
@@ -63,8 +64,12 @@ function App({ loggedInUser }) {
             render={() => (loggedInUser ? <MapView /> : <Redirect to="/" />)}
           />
           <Route
-            path="/view-events-list"
-            render={() => (loggedInUser ? <EventListView /> : <Redirect to="/" />)}
+            path="/view-places-list"
+            render={() => (loggedInUser ? <PlacesListView /> : <Redirect to="/" />)}
+          />
+          <Route
+            path="/all-events"
+            render={() => (loggedInUser ? <EventsListView /> : <Redirect to="/" />)}
           />
         </Switch>
         {loggedInUser && <Navbar />}

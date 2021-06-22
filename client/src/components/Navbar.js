@@ -21,6 +21,7 @@ const styles = makeStyles((theme) => ({
     bottom: 0,
     backgroundColor: theme.palette.secondary.main,
     width: "100%",
+    transition: "none !important"
   },
   menuIcon: {
     width: "1.5em",
@@ -29,12 +30,16 @@ const styles = makeStyles((theme) => ({
     textDecoration: "none",
     color: theme.palette.onPrimary.nav,
   },
+  root: {
+    transition: "none"
+  }
 }));
 
-const Navbar = () => {
+const Navbar = ({logoutUser}) => {
   const classes = styles();
   const [value, setValue] = React.useState(0);
 
+  
   return (
     <BottomNavigation
       value={value}
@@ -47,7 +52,7 @@ const Navbar = () => {
       <BottomNavigationAction
         component={Link}
         to="/profile"
-        classes={{ selected: classes.navlinks }}
+        classes={{ selected: classes.navlinks, root: classes.root }}
         label="Profile"
         icon={
           value === 0 ? (
@@ -68,8 +73,8 @@ const Navbar = () => {
 
       <BottomNavigationAction
         component={Link}
-        to="/view-events-list"
-        classes={{ selected: classes.navlinks }}
+        to="/all-events"
+        classes={{ selected: classes.navlinks, root: classes.root }}
         label="Events"
         icon={
           value === 1 ? (
@@ -90,7 +95,7 @@ const Navbar = () => {
       <BottomNavigationAction
         component={Link}
         to="/view-map"
-        classes={{ selected: classes.navlinks }}
+        classes={{ selected: classes.navlinks, root: classes.root }}
         label="Explore"
         icon={
           value === 2 ? (
@@ -110,15 +115,15 @@ const Navbar = () => {
       />
       <BottomNavigationAction
         classes={{ selected: classes.navlinks }}
-        label="Nearby"
+        label="Logout"
         icon={
           <img
             alt="logout-icon"
             src={logoutIcon}
             className={classes.menuIcon}
-            onClick={logoutUser()}
-          />
-        }
+            />
+          }
+          onClick={() => logoutUser()}
       />
     </BottomNavigation>
   );

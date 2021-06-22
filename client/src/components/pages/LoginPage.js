@@ -18,6 +18,7 @@ import { loginUser, cleanError } from "../../redux/actions/registerActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import InfoText from "../InfoText";
+import clsx from "clsx"
 
 const styles = () => ({
   mainContainer: {
@@ -40,6 +41,10 @@ const styles = () => ({
       minWidth: 300
     },
   },
+  bottomContainer: {
+    marginTop: 20,
+    marginBottom: 20
+  }
 });
 
 const LoginPage = ({
@@ -119,7 +124,7 @@ const LoginPage = ({
         display="flex"
         flexDirection="column"
         alignItems="center"
-        className={classes.textFieldsContainer}
+        className={clsx(classes.container, classes.bottomContainer)}
       >
         {loading ? (
           <CircularProgress />

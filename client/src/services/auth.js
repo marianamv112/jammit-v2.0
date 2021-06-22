@@ -26,10 +26,10 @@ export const login = (email, password) => {
 
 export const logout = () => {
   return axios
-    .post(API_URL + "/auth/logout", {}, { withCredentials: true })
+    .post(API_URL + "/auth/logout", { withCredentials: true })
     .then((response) => response.data);
 };
-
+ 
 export const verifyUser = (confirmationCode) => {
   return axios
   .get(API_URL + "/auth/confirm/" + confirmationCode, { withCredentials: true })

@@ -33,41 +33,35 @@ const styles = makeStyles((theme) => ({
   },
   container: {
     height: "fit-content",
-    /* width: "30%", */
-    display: "flex",
-    justifyContent: "space-between",
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      minWidth: 365,
-    },
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      minWidth: 438,
-      maxWidth: 384,
-    },
-    [`@media (min-width: ${desktop_viewport}px)`]: {
-      minWidth: 375,
-      maxWidth: 394,
+    minWidth: 365,
+    maxWidth: 435,
+    [`@media (max-width: ${tablet_viewport}px)`]: {
+      minWidth: 300,
+      maxWidth: 370,
     },
   },
   iconButton: {
-    [`@media (min-width: ${tablet_viewport}px)`]: {
-      maxWidth: "1.5em",
-    },
-    [`@media (max-width: ${mobile_viewport}px)`]: {
-      maxWidth: "1.7em",
-    },
+    width: 40,
+    padding: 0,
+    margin: 10,
   },
   iconImage: {
-    maxWidth: "100%",
+    width: "100%",
   },
-  editIconImage: {
-    maxWidth: "50%",
+  editIconButton: {
+    width: 30,
+    padding: 0,
+    margin: 10,
   },
   title: {
     marginTop: 20,
     marginBottom: 20,
     width: "100%",
   },
-  searchBar: {
+  extraSpace: {
+    marginBottom: 20,
+  },
+  minimalSpace: {
     marginBottom: 10,
   },
 }));
@@ -90,25 +84,33 @@ const UserEvents = ({ currentUser }) => {
       minHeight={200}
       className={classes.mainContainer}
     >
-      <Box display="flex" flexDirection="row" className={classes.container}>
-        <Box className={classes.title}>
-          <Typography variant="h1">{currentUser.username}'s events </Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        className={classes.container}
+      >
+        <Box display="flex" flexDirection="row" className={classes.container}>
+          <Box className={classes.title}>
+            <Typography variant="h1">
+              {currentUser.username}'s events{" "}
+            </Typography>
+          </Box>
+          <IconButton
+            component={Link}
+            to="/new-event"
+            className={classes.iconButton}
+          >
+            <img
+              src={addEventIcon}
+              alt="add-event-icon"
+              className={classes.iconImage}
+            />
+          </IconButton>
         </Box>
-        <IconButton
-          component={Link}
-          to="/new-event"
-          className={classes.iconButton}
-        >
-          <img
-            src={addEventIcon}
-            alt="add-event-icon"
-            className={classes.iconImage}
-          />
-        </IconButton>
-      </Box>
-      <Box display="flex" flexDirection="column" className={classes.container}>
+
         <SearchBar
-          className={classes.searchBar}
+          className={classes.extraSpace}
           //value={this.state.value}
           //onChange={(newValue) => this.setState({ value: newValue })}
           //onRequestSearch={() => doSomethingWith(this.state.value)}
@@ -117,7 +119,7 @@ const UserEvents = ({ currentUser }) => {
         {events &&
           events.map((event) => (
             <Box
-              className={classes.searchBar}
+              className={classes.minimalSpace}
               display="flex"
               flexDirection="row"
               key={event._id}
@@ -130,11 +132,15 @@ const UserEvents = ({ currentUser }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <IconButton component={Link} to={`/edit-event/${event._id}`}>
+                <IconButton
+                  component={Link}
+                  to={`/edit-event/${event._id}`}
+                  className={classes.editIconButton}
+                >
                   <img
                     src={editEventIcon}
                     alt="edit-event-icon"
-                    className={classes.editIconImage}
+                    className={classes.iconImage}
                   />
                 </IconButton>
               </Box>

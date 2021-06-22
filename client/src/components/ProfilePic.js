@@ -15,8 +15,9 @@ const styles = makeStyles((theme) => ({
     position: "absolute",
     borderRadius: "50%",
     paddingBottom: "45%",
-      width: "45%",
-    [`@media (min-width: ${desktop_viewport}px)`]: {
+    width: "45%",
+    left: "28%",
+    /*     [`@media (min-width: ${desktop_viewport}px)`]: {
       left: "27%",
     },
     [`@media (max-width: ${tablet_viewport}px)`]: {
@@ -24,17 +25,13 @@ const styles = makeStyles((theme) => ({
     },
     [`@media (max-width: ${mobile_viewport}px)`]: {
       left: "28%",
-    },
+    }, */
   },
 }));
 
-const ProfilePic = ({image}) => {
+const ProfilePic = ({ image }) => {
   const classes = styles();
-  return (
-    <CardMedia image={image} className={classes.main} />
-  );
+  return <CardMedia image={image} className={classes.main} />;
 };
-
-
 
 export default ProfilePic;

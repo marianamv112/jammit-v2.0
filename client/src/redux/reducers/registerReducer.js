@@ -15,16 +15,25 @@ const setReducer = (state = defaultState, action) => {
         ...state,
         user: {
           loading: false,
-          currentUser: { 
+          currentUser: {
             id: action.id,
             username: action.username,
             bio: action.bio,
             instruments: action.instruments,
             profilePicture: action.profilePicture,
-            socialMedia: action.socialMedia
+            socialMedia: action.socialMedia,
           },
         },
       };
+    case "LOGOUT_USER":
+      return {
+        ...state,
+        user: {
+          loading: false,
+          currentUser: null
+        },
+      };
+
     case "SET_PENDING_USER":
       return {
         ...state,
@@ -47,7 +56,7 @@ const setReducer = (state = defaultState, action) => {
         user: {
           loading: true,
         },
-      };
+      };                                                                                                
     case "SET_ERROR":
       return {
         ...state,

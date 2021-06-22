@@ -8,6 +8,7 @@ const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const eventRoutes = require('./routes/events')
+const mapRoutes = require('./routes/places')
 const cors = require('cors');
 require('./config/passport');
 
@@ -49,6 +50,8 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/map', mapRoutes);
+
 
 //https://maps.googleapis.com/maps/api/place/textsearch/json?query=123+main+street&location=42.3675294,-71.186966&radius=10000&key=YOUR_API_KEY
 
