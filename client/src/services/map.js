@@ -5,7 +5,7 @@ export const googleSearch = (place) => {
     return axios.get(
         API_URL + "/map/" + place, { withCredentials: true}
     ).then(
-        response => console.log(response)
+        (response) => response.data.jamSessions.results
     )
 }
 

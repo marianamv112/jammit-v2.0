@@ -9,12 +9,14 @@ mapRoutes.get("/:query", isLoggedIn, (req, res, next) => {
     .get(
       `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}+jam+session&radius=10000&key=${process.env.GOOGLE_MAPS_API_KEY}`
     )
-    .then((res) => {
-      console.log(check)
-      res.status(200).json({ jamSessions: res.data })})
-    /* .catch((error) => {
+    .then((response) => {
+      console.log("check" + response)
+      res.json({ jamSessions: response.data })
+    })
+    .catch((error) => {
+      console.log("error is " + error)
       res.status(500).json("Something bad happened");
-    }); */
+    }); 
 });
 
 module.exports = mapRoutes;

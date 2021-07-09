@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { mobile_viewport, tablet_viewport, desktop_viewport } from "../config";
@@ -47,8 +47,9 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const Map = ( ) => {
+const Map = () => {
   const [jamSessions, setJamSessions] = useState(lisbon_places);
+  const [map, setMap] = useState(null);
   const [place, setPlaceSearch] = useState("");
   const [cardVisible, setCardView] = useState(false);
   const classes = styles();
@@ -65,21 +66,27 @@ const Map = ( ) => {
     };
   };
 
-  const createMarkers = ({ map, maps }) => {
-    jamSessions &&
-      jamSessions.map((place) => {
-        const marker = new maps.Marker({
-          position: {
-            lat: place.geometry.location.lat,
-            lng: place.geometry.location.lng,
-          },
-          icon: pinIcon,
-          map: map,
-        });
-        marker.addListener("click", () => {
-          setCardView(!cardVisible);
-        });
+  useEffect(() => {
+    if (window.google) {
+      createMarkers()
+    }
+  }, [jamSessions])
+
+  const createMarkers = () => {
+    jamSessions && jamSessions.map((place) => {
+      const marker = new window.google.maps.Marker({
+        position: {
+          lat: place.geometry.location.lat,
+          lng: place.geometry.location.lng,
+        },
+        icon: pinIcon,
+        map: map,
       });
+      console.log(jamSessions)
+      marker.addListener("click", () => {
+        setCardView(!cardVisible);
+      });
+    });
   };
 
   const handleSearch = (placeQuery) => {
@@ -87,9 +94,10 @@ const Map = ( ) => {
   };
 
   const submitSearch = () => {
-    console.log("check")
     if (place) {
-      googleSearch(place).then((res) => console.log("asdasdasd ", res));
+      googleSearch(place).then((res) => {
+        setJamSessions(res)
+      });
     }
   };
 
@@ -100,7 +108,10 @@ const Map = ( ) => {
         bootstrapURLKeys={{
           key: process.env.REACT_APP_API_KEY,
         }}
-        //onGoogleApiLoaded={search}
+        onGoogleApiLoaded={({ map, maps }) => {
+          setMap(map)
+          
+        }}
         yesIWantToUseGoogleMapApiInternals
         defaultCenter={location}
         defaultZoom={17}
