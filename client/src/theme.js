@@ -1,9 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
-import {
-  desktop_viewport,
-  tablet_viewport,
-  mobile_viewport,
-} from "./config";
+import "./index.css"
 
 const theme = createMuiTheme({
   root: {
@@ -54,12 +50,6 @@ const theme = createMuiTheme({
       fontWeight: 700,
     },
     body1: {
-      /* [`@media (min-width: ${mobile_viewport}px)`]: {
-        fontSize: "0.8rem"
-      },
-      [`@media (min-width: ${tablet_viewport}px)`]: {
-        fontSize: "1rem"
-      }, */
       fontFamily: ["Roboto", "sans-serif"].join(","),
       fontWeight: 400,
      

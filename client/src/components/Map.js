@@ -82,7 +82,6 @@ const Map = () => {
         icon: pinIcon,
         map: map,
       });
-      console.log(jamSessions)
       marker.addListener("click", () => {
         setCardView(!cardVisible);
       });
