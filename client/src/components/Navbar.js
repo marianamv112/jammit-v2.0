@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Box } from "@material-ui/core";
 import paperLineIcon from "../assets/icons/paper_line_icon.png";
 import paperFillIcon from "../assets/icons/paper_fill_icon.png";
 import jazzLineIcon from "../assets/icons/jazz_line_icon.png";
@@ -35,11 +35,11 @@ const styles = makeStyles((theme) => ({
   }
 }));
 
-const Navbar = ({logoutUser}) => {
+const Navbar = ({ logoutUser, currentUser }) => {
   const classes = styles();
   const [value, setValue] = React.useState(0);
 
-  
+
   return (
     <BottomNavigation
       value={value}
@@ -51,7 +51,7 @@ const Navbar = ({logoutUser}) => {
     >
       <BottomNavigationAction
         component={Link}
-        to="/profile"
+        to={`/profile/${currentUser.id}`}
         classes={{ selected: classes.navlinks, root: classes.root }}
         label="Profile"
         icon={
@@ -121,13 +121,19 @@ const Navbar = ({logoutUser}) => {
             alt="logout-icon"
             src={logoutIcon}
             className={classes.menuIcon}
-            />
-          }
-          onClick={() => logoutUser()}
+          />
+        }
+        onClick={() => logoutUser()}
       />
     </BottomNavigation>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.user.currentUser
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
@@ -138,4 +144,4 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

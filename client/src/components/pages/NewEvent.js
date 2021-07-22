@@ -8,12 +8,10 @@ import {
 } from "@material-ui/core";
 import tablet_viewport from "../../config";
 import PageTitle from "../PageTitle";
-import { cleanError } from "../../redux/actions/registerActions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
-import { updateUser } from "../../redux/actions/userActions";
 import { createNewEvent } from "../../services/events";
 import { useHistory } from "react-router-dom";
 
@@ -43,7 +41,7 @@ const styles = makeStyles((theme) => ({
   },
   input: {
     filter: "none",
-    //borderRadius: 10,
+    borderRadius: 10,
   },
   label: {
     textAlign: "left",
@@ -77,6 +75,8 @@ const NewEvent = ({ currentUser }) => {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [missingLocation, setMissingLocation] = useState(false);
+  const [date, setDate] = useState("");
+  const [missingDate, setMissingDate] = useState(false);
   const [place, setPlace] = useState("");
   const [missingPlace, setMissingPlace] = useState(false);
   const [instruments, setInstruments] = useState([""]);
@@ -94,6 +94,10 @@ const NewEvent = ({ currentUser }) => {
   const handleLocation = (location) => {
     setLocation(location);
   };
+
+  const handleDate = (date) => {
+    setDate(date)
+  }
 
   const handlePlace = (place) => {
     setPlace(place);
@@ -139,12 +143,17 @@ const NewEvent = ({ currentUser }) => {
       setMissingLocation(true);
     }
 
-    if (eventTitle && place && location) {
+    if (!date) {
+      setMissingDate(true);
+    }
+
+    if (eventTitle && place && location && date) {
       const formData = new FormData();
 
       formData.append("title", eventTitle);
       formData.append("place", place);
       formData.append("location", location);
+      formData.append("date", date)
 
       if (imageURL) {
         formData.append("file", imageURL, `eventPic-${eventTitle}`);
@@ -194,7 +203,6 @@ const NewEvent = ({ currentUser }) => {
           placeholder={"Late night jam"}
           onClick={() => {
             setMissingEventTitle(false);
-            //cleanError();
           }}
           InputProps={{
             className: classes.input,
@@ -233,11 +241,10 @@ const NewEvent = ({ currentUser }) => {
           value={description}
           onChange={(e) => handleDescription(e.target.value)}
           className={clsx(classes.textField, "description-input")}
-          inputProps={{
+          InputProps={{
             className: classes.input,
             maxLength: 380,
           }}
-          root={{ borderRadius: 10 }}
         />
 
         <InputLabel htmlFor="place-edit-input" className={classes.label}>
@@ -279,6 +286,27 @@ const NewEvent = ({ currentUser }) => {
             maxLength: 20,
           }}
         />
+
+        <InputLabel htmlFor="location-edit-input" className={classes.label}>
+          Date
+        </InputLabel>
+
+        <TextField
+          id="date"
+          type="date"
+          variant="outlined"
+          defaultValue="1992-02-13"
+          value={date}
+          error={missingDate}
+          helperText={missingDate && "This field is required"}
+          onChange={(e) => handleDate(e.target.value)}
+          onClick={(e) => setMissingDate(false)}
+          className={classes.textField}
+          InputProps={{
+            className: classes.input,
+          }}
+        />
+
 
         <InputLabel
           htmlFor="instruments-create-event-input"
@@ -362,14 +390,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      cleanError,
-      updateUser,
-    },
-    dispatch
-  );
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewEvent);
+
+export default connect(mapStateToProps, null)(NewEvent);

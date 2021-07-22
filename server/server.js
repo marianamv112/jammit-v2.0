@@ -14,8 +14,6 @@ require('./config/passport');
 
 
 const app = express();
-
-
 app.use(express.static(path.join(__dirname, "../client/public")));
 
 if (process.env.NODE_ENV !== 'production') {
@@ -51,10 +49,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/map', mapRoutes);
-
-
-//https://maps.googleapis.com/maps/api/place/textsearch/json?query=123+main+street&location=42.3675294,-71.186966&radius=10000&key=YOUR_API_KEY
-
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use("/api/*", (req, res, next) => {

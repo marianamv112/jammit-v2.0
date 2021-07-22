@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid black",
     minHeight: 126,
     width: "100%",
+    borderRadius: 10,
   },
   details: {
     display: "flex",
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   cover: {
-    width: 151,
+    minWidth: 151,
     margin: 10,
   },
   controls: {
@@ -45,22 +46,38 @@ const MediaControlCard = (props) => {
   const event = props.event;
 
   return (
-    <ButtonBase component={Link} to={`/view-event/${event._id}`} className={classes.button}>
+    window.location.pathname.includes('events') ?
+      <ButtonBase component={Link} to={`/view-event/${event._id}`} className={classes.button}>
+        <Card className={classes.root}>
+          <CardMedia
+            className={classes.cover}
+            image={event.eventPicture}
+            title={event.title}
+          />
+          <div className={classes.details}>
+            <CardContent className={classes.content}>
+              <Typography variant="subtitle1"><b>{event.title}</b></Typography>
+              <Typography variant="subtitle1">{event.location}</Typography>
+              <Typography variant="subtitle1">{event.place}</Typography>
+            </CardContent>
+          </div>
+        </Card>
+      </ButtonBase>
+      :
       <Card className={classes.root}>
         <CardMedia
           className={classes.cover}
           image={event.eventPicture}
-          title={event.title ? event.title : event.name}
+          title={event.title}
         />
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography variant="subtitle1">{event.title ? event.title : event.name}</Typography>
-            <Typography variant="subtitle1">{event.location ? event.location : event.formatted_address}</Typography>
+            <Typography variant="subtitle1"><b>{event.title}</b></Typography>
+            <Typography variant="subtitle1">{event.location}</Typography>
             <Typography variant="subtitle1">{event.place}</Typography>
           </CardContent>
         </div>
       </Card>
-    </ButtonBase>
   );
 };
 

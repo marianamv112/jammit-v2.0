@@ -1,11 +1,8 @@
 const defaultState = {
-  user: {
-    currentUser: null,
-    loading: false,
-    error: null,
-    errorMessage: null,
-    pendingUser: null,
-  },
+  currentUser: null,
+  loading: false,
+  error: null,
+  errorMessage: null,
 };
 
 const setReducer = (state = defaultState, action) => {
@@ -13,58 +10,47 @@ const setReducer = (state = defaultState, action) => {
     case "SET_USER":
       return {
         ...state,
-        user: {
-          loading: false,
-          currentUser: {
-            id: action.id,
-            username: action.username,
-            bio: action.bio,
-            instruments: action.instruments,
-            profilePicture: action.profilePicture,
-            socialMedia: action.socialMedia,
-          },
+        loading: false,
+        currentUser: {
+          id: action.id,
+          username: action.username,
+          bio: action.bio,
+          instruments: action.instruments,
+          profilePicture: action.profilePicture,
+          socialMedia: action.socialMedia,
         },
       };
     case "LOGOUT_USER":
       return {
         ...state,
-        user: {
-          loading: false,
-          currentUser: null
-        },
+        loading: false,
+        currentUser: null
       };
 
     case "SET_PENDING_USER":
       return {
         ...state,
-        user: {
-          loading: false,
-          pendingUser: true,
-          errorMessage: action.message,
-        },
+        loading: false,
+        pendingUser: true,
+        errorMessage: action.message,
       };
     case "NOT_LOADING":
       return {
         ...state,
-        user: {
-          loading: false,
-        },
+        loading: false,
       };
     case "LOADING":
       return {
         ...state,
-        user: {
-          loading: true,
-        },
-      };                                                                                                
+        /* currentUser: state.user.currentUser, */
+        loading: true,
+      };
     case "SET_ERROR":
       return {
         ...state,
-        user: {
-          loading: false,
-          error: action.error,
-          errorMessage: action.message,
-        },
+        loading: false,
+        error: action.error,
+        errorMessage: action.message,
       };
 
     default:

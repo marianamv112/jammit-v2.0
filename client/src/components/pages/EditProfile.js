@@ -16,7 +16,6 @@ import clsx from "clsx";
 import ActionButton from "../ActionButton";
 import { updateUser } from "../../redux/actions/userActions";
 
-
 const styles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -43,7 +42,7 @@ const styles = makeStyles((theme) => ({
   },
   input: {
     filter: "none",
-    //borderRadius: 10,
+    borderRadius: 10,
   },
   label: {
     textAlign: "left",
@@ -70,7 +69,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
+const EditProfile = ({ cleanError, currentUser, updateUser, ...props }) => {
   const classes = styles();
   const [username, setUsername] = useState(currentUser.username);
   const [missingUsername, setMissingUsername] = useState(false);
@@ -125,20 +124,21 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
     if (imageURL) {
       formData.append("file", imageURL, "profilePic");
     }
-    if (username) { 
+    if (username) {
       formData.append("username", username);
     }
-    if (bio) { 
+    if (bio) {
       formData.append("bio", bio);
     }
     if (instruments) {
-      instruments.forEach(instrument => 
+      instruments.forEach(instrument =>
         formData.append("instruments", instrument))
     }
     if (socialMedia) {
       Object.keys(socialMedia).forEach(key => formData.append(key, socialMedia[key]));
-     }
-    updateUser(currentUser.username, formData)
+    }
+
+    updateUser(currentUser.id, formData);
   };
 
   return (
@@ -154,7 +154,7 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
         flexDirection="column"
       >
         <Box className={classes.title}>
-        <PageTitle title={"Edit Profile"}  />
+          <PageTitle title={"Edit Profile"} />
         </Box>
         <InputLabel htmlFor="username-edit-input" className={classes.label}>
           Username
@@ -164,7 +164,7 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
           variant="outlined"
           value={username}
           onChange={(e) => handleUsername(e.target.value)}
-          className={clsx(classes.textField, "bio-input")}
+          className={clsx(classes.textField, "username-input")}
           error={missingUsername}
           onClick={() => {
             setMissingUsername(false);
@@ -207,11 +207,10 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
           value={bio}
           onChange={(e) => handleBio(e.target.value)}
           className={clsx(classes.textField, "bio-input")}
-          inputProps={{
+          InputProps={{
             className: classes.input,
             maxLength: 380,
           }}
-          root={{ borderRadius: 10 }}
         />
         <InputLabel htmlFor="instruments-edit-input" className={classes.label}>
           Instruments
@@ -224,53 +223,53 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
           width="100%"
         >
           {instruments.map((instrument, i) => (
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="strech"
-                justifyContent="space-evenly"
-                key={i}
-                width="100%"
-              >
-                <TextField
-                  type="text"
-                  name="instrument"
-                  id={"instrument-input-button-" + i}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="strech"
+              justifyContent="space-evenly"
+              key={i}
+              width="100%"
+            >
+              <TextField
+                type="text"
+                name="instrument"
+                id={"instrument-input-button-" + i}
+                variant="outlined"
+                value={instrument}
+                key={"input" + i}
+                className={classes.textField}
+                onChange={(e) => handleInstruments(e, i)}
+                style={{ marginRight: "10px" }}
+                InputProps={{
+                  className: classes.input,
+                }}
+              />
+              {i === 0 ? (
+                <Button
+                  className={classes.formButton}
+                  type="button"
+                  id="instruments-add-button"
                   variant="outlined"
-                  value={instrument}
-                  key={"input" + i}
-                  className={classes.textField}
-                  onChange={(e) => handleInstruments(e, i)}
-                  style={{ marginRight: "10px" }}
-                  InputProps={{
-                    className: classes.input,
-                  }}
-                />
-                {i === 0 ? (
-                  <Button
-                    className={classes.formButton}
-                    type="button"
-                    id="instruments-add-button"
-                    variant="outlined"
-                    key={"button" + i}
-                    onClick={(e) => handleAddField(e)}
-                  >
-                    +
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    id="instrument-delete-button"
-                    className={classes.formButton}
-                    variant="outlined"
-                    key={"button" + i}
-                    onClick={(e) => handleRemoveField(i, e)}
-                  >
-                    x
-                  </Button>
-                )}
-              </Box>
-            ))}
+                  key={"button" + i}
+                  onClick={(e) => handleAddField(e)}
+                >
+                  +
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  id="instrument-delete-button"
+                  className={classes.formButton}
+                  variant="outlined"
+                  key={"button" + i}
+                  onClick={(e) => handleRemoveField(i, e)}
+                >
+                  x
+                </Button>
+              )}
+            </Box>
+          ))}
         </Box>
         <InputLabel htmlFor="instruments-edit-input" className={classes.label}>
           Social Media
@@ -387,12 +386,12 @@ const EditProfile = ({cleanError, currentUser, updateUser, ...props}) => {
             />
           </Box>
         </Box>
-        <Box 
-        display="flex"
-        flexDirection="row"
-        width="100%"
-        justifyContent="center"
-        className={classes.submitButton}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          justifyContent="center"
+          className={classes.submitButton}>
           <ActionButton text="Submit" onClick={submitUpdate} />
         </Box>
       </Box>

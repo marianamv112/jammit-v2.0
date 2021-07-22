@@ -40,7 +40,7 @@ const styles = makeStyles((theme) => ({
   },
   input: {
     filter: "none",
-    //borderRadius: 10,
+    borderRadius: 10,
   },
   label: {
     textAlign: "left",
@@ -74,6 +74,8 @@ const EditEvent = ({ currentUser }) => {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [missingLocation, setMissingLocation] = useState(false);
+  const [date, setDate] = useState("");
+  const [missingDate, setMissingDate] = useState(false);
   const [place, setPlace] = useState("");
   const [missingPlace, setMissingPlace] = useState(false);
   const [instruments, setInstruments] = useState([""]);
@@ -89,6 +91,7 @@ const EditEvent = ({ currentUser }) => {
       setPlace(res.event.place);
       setInstruments(res.event.instruments);
       setImageURL(res.event.imageURL);
+      setDate(res.event.date.split('T')[0])
     });
   }, []);
 
@@ -103,6 +106,10 @@ const EditEvent = ({ currentUser }) => {
   const handleLocation = (location) => {
     setLocation(location);
   };
+
+  const handleDate = (date) => {
+    setDate(date)
+  }
 
   const handlePlace = (place) => {
     setPlace(place);
@@ -148,11 +155,16 @@ const EditEvent = ({ currentUser }) => {
       setMissingLocation(true);
     }
 
-    if (eventTitle && place && location) {
+    if (!date) {
+      setMissingDate(true);
+    }
+
+    if (eventTitle && place && location && date) {
       const formData = new FormData();
       formData.append("title", eventTitle);
       formData.append("location", location);
       formData.append("place", place);
+      formData.append("date", date)
 
       if (imageURL) {
         formData.append("file", imageURL, `eventPic-${eventTitle}`);
@@ -201,7 +213,6 @@ const EditEvent = ({ currentUser }) => {
           placeholder={"Late night jam"}
           onClick={() => {
             setMissingEventTitle(false);
-            //cleanError();
           }}
           InputProps={{
             className: classes.input,
@@ -240,11 +251,10 @@ const EditEvent = ({ currentUser }) => {
           value={description}
           onChange={(e) => handleDescription(e.target.value)}
           className={clsx(classes.textField, "description-input")}
-          inputProps={{
+          InputProps={{
             className: classes.input,
             maxLength: 380,
           }}
-          root={{ borderRadius: 10 }}
         />
 
         <InputLabel htmlFor="place-edit-input" className={classes.label}>
@@ -282,6 +292,25 @@ const EditEvent = ({ currentUser }) => {
           InputProps={{
             className: classes.input,
             maxLength: 20,
+          }}
+        />
+
+        <InputLabel htmlFor="location-edit-input" className={classes.label}>
+          Date
+        </InputLabel>
+
+        <TextField
+          id="edit-date"
+          variant="outlined"
+          type="date"
+          value={date}
+          error={missingDate}
+          helperText={missingDate && "This field is required"}
+          onChange={(e) => handleDate(e.target.value)}
+          onClick={(e) => setMissingDate(false)}
+          className={classes.textField}
+          InputProps={{
+            className: classes.input,
           }}
         />
 

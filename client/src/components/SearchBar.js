@@ -1,7 +1,6 @@
 import {
   makeStyles,
   TextField,
-  withStyles,
   InputAdornment,
   IconButton
 } from "@material-ui/core";
@@ -10,6 +9,7 @@ import clsx from "clsx";
 
 const styles = makeStyles((theme) => ({
   textField: {
+    
     width: "100%",
     filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
     backgroundColor: "#FFFFFF",
@@ -17,6 +17,7 @@ const styles = makeStyles((theme) => ({
   },
   input: {
     borderRadius: 10,
+    height: 40
   },
   iconSignifer: {
     color: "rgba(0, 0, 0, 0.54)",

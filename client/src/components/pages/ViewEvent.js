@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Box, makeStyles, IconButton, Typography } from "@material-ui/core";
+import { Box, makeStyles, IconButton, Typography, CircularProgress, ButtonBase } from "@material-ui/core";
 import { getSingleEvent } from "../../services/events";
 import { Link } from "react-router-dom";
 import editEventIcon from "../../assets/icons/pencil_icon.png";
 import {
-  mobile_viewport,
   tablet_viewport,
   desktop_viewport,
 } from "../../config";
 import EventIcon from "@material-ui/icons/Event";
 import PlaceIcon from "@material-ui/icons/Place";
 import clsx from "clsx";
+import ReactRoundedImage from "react-rounded-image";
+import Moment from 'react-moment';
+
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -74,112 +76,117 @@ const styles = makeStyles((theme) => ({
   }
 }));
 
-const ViewEvent = ({ currentUser }) => {
+const ViewEvent = ({ loggedInUser }) => {
   const [event, setEvent] = useState("");
   const classes = styles();
   const eventId = window.location.pathname.split("/view-event/")[1];
 
   useEffect(() => {
-    getSingleEvent(eventId).then((res) => setEvent(res.event));
-  });
+    getSingleEvent(eventId).then((res) => {
+      setEvent(res.event)
+    });
+  }, []);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="space-evenly"
-      minHeight={200}
-      className={classes.mainContainer}
-    >
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        className={classes.container}
-      >
-        <Box className={classes.title}>
-          <Typography variant="h1">{event.title} </Typography>
-        </Box>
-        <IconButton
-          component={Link}
-          to={`/edit-event/${event.id}`}
-          className={classes.iconButton}
-        >
-          <img
-            src={editEventIcon}
-            alt="edit-event-icon"
-            className={classes.iconImage}
-          />
-        </IconButton>
-      </Box>
+    event ?
       <Box
         display="flex"
         flexDirection="column"
-        className={clsx(classes.container, classes.eventContent)}
+        alignItems="center"
+        justifyContent="space-evenly"
+        minHeight={200}
+        className={classes.mainContainer}
       >
-        <Box display="flex" flexDirection="column" justifyContent="center">
-          <img
-            src={event.eventPicture}
-            alt="edit-event-icon"
-            className={classes.eventPicture}
-          />
-          <Box
-            display="flex"
-            flexDirection="row"
-            className={classes.eventContents}
-          >
-            <EventIcon />
-            <Typography className={classes.text}>Friday, 27th July</Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          className={classes.container}
+        >
+          <Box className={classes.title}>
+            <Typography variant="h1">{event.title} </Typography>
           </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            className={classes.eventContents}
-          >
-            <PlaceIcon />
-            <Typography className={classes.text}>
-              {event.place}, {event.location}
-            </Typography>
-          </Box>
-          <Typography className={classes.eventContents}>
-            {event.description}
-          </Typography>
+          {loggedInUser.id === event.author._id &&
+            <IconButton
+              component={Link}
+              to={`/edit-event/${event._id}`}
+              className={classes.iconButton}
+            >
+              <img
+                src={editEventIcon}
+                alt="edit-event-icon"
+                className={classes.iconImage}
+              />
+            </IconButton>}
         </Box>
-      </Box>
-      <Box
-        className={classes.searchBar}
-        display="flex"
-        flexDirection="row"
-        className={clsx(classes.container, classes.title)}
-      >
-        <Box display="flex" className={classes.roundFrame}>
-          <img
-            src={currentUser.profilePicture}
-            alt="profile-picture"
-            className={classes.profileImage}
-          />
-        </Box>
-
         <Box
           display="flex"
           flexDirection="column"
-          justifyContent="center"
-          className={classes.text}
+          className={clsx(classes.container, classes.eventContent)}
         >
-          <Typography>
-            <b>Posted by:</b>
-          </Typography>
-          <Typography>{currentUser.username}</Typography>
+          <Box display="flex" flexDirection="column" justifyContent="center">
+            <img
+              src={event.eventPicture}
+              alt="edit-event-icon"
+              className={classes.eventPicture}
+            />
+            <Box
+              display="flex"
+              flexDirection="row"
+              className={classes.eventContents}
+            >
+              <EventIcon />
+              <Typography className={classes.text}><Moment format="dddd, Do MMMM YYYY">{event.date}</Moment></Typography>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              className={classes.eventContents}
+            >
+              <PlaceIcon />
+              <Typography className={classes.text}>
+                {event.place}, {event.location}
+              </Typography>
+            </Box>
+            <Typography className={classes.eventContents}>
+              {event.description}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="row"
+          className={clsx(classes.container, classes.title)}
+        >
+          <ButtonBase component={Link} to={`/profile/${event.author._id}`}>
+            <ReactRoundedImage
+              image={event.author.profilePicture}
+              roundedSize="0"
+              imageWidth="60"
+              imageHeight="60"
+            />
+          </ButtonBase>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            className={classes.text}
+          >
+            <Typography>
+              <b>Posted by:</b>
+            </Typography>
+            <Typography>{event.author.username}</Typography>
+          </Box>
         </Box>
       </Box>
-    </Box>
+      :
+      <CircularProgress />
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.user.currentUser,
+    loggedInUser: state.user.currentUser,
   };
 };
 

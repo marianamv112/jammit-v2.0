@@ -5,10 +5,9 @@ import clsx from 'clsx'
 const styles = makeStyles((theme) => ({
   textBox: {
       backgroundColor: theme.palette.primary.info,
-      width: "100%",
+      maxWidth: "100%",
       textAlign: "center",
-      paddingTop: "0.4em", 
-      paddingBottom: "0.4em",
+      padding: 10,
       fontFamily: ["Roboto", "sans-serif"].join(","),
   },
   textColor: {

@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
-  mobile_viewport,
   tablet_viewport,
-  desktop_viewport,
 } from "../../config";
 import addEventIcon from "../../assets/icons/plus.png";
-import editEventIcon from "../../assets/icons/pencil_icon.png";
-import SearchBar from "material-ui-search-bar";
+import SearchBar from "../SearchBar";
 import MediaControlCard from "../MediaControlCard";
-import lisbon_places from "../../assets/places/places";
 import clsx from 'clsx'
-import { getEvents } from "../../services/events"
+import { getEvents, searchEvent } from "../../services/events"
+import InfoText from "../InfoText"
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -28,7 +25,7 @@ const styles = makeStyles((theme) => ({
   },
   container: {
     height: "fit-content",
-    minwidth: 365,
+    minWidth: 365,
     maxWidth: 435,
     [`@media (max-width: ${tablet_viewport}px)`]: {
       minWidth: 300,
@@ -39,9 +36,11 @@ const styles = makeStyles((theme) => ({
     width: 40,
     padding: 0,
     margin: 10,
+
   },
   iconImage: {
     maxWidth: "100%",
+    filter: "drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.25))",
   },
   editIconImage: {
     width: 30,
@@ -55,77 +54,96 @@ const styles = makeStyles((theme) => ({
     marginTop: 20,
     marginBottom: 20,
   },
+  searchBar: {
+    borderRadius: 10,
+    width: "100%"
+  }
 
 }));
 
 const EventListView = () => {
   const classes = styles();
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(null);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    getEvents().then((res) => setEvents(res.events));
-  }, []);
+    getEvents().then((res) => {
+      setEvents(res.events)
+    });
+}, []);
 
-  return (
+const submitSearch = () => {
+  if (query !== "") {
+    searchEvent(query).then(results => setEvents(results))
+  } else {
+    getEvents().then((res) => {
+      setEvents(res.events)
+    });
+  }
+}
+
+
+return (
+  <Box
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="space-evenly"
+    minHeight={200}
+    className={classes.mainContainer}
+  >
     <Box
       display="flex"
       flexDirection="column"
-      alignItems="center"
-      justifyContent="space-evenly"
-      minHeight={200}
-      className={classes.mainContainer}
+      justifyContent="space-between"
+      className={classes.container}
     >
       <Box
         display="flex"
-        flexDirection="column"
+        flexDirection="row"
         justifyContent="space-between"
-        className={classes.container}
+        alignItems="center"
+        className={clsx(classes.container, classes.extraSpace)}
       >
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          className={clsx(classes.container, classes.extraSpace)}
+        <SearchBar
+          className={classes.searchBar}
+          //value={this.state.value}
+          onChange={(e) => setQuery(e.target.value)}
+          onClick={() => submitSearch()}
+        //onRequestSearch={() => doSomethingWith(this.state.value)}
+        />
+        <IconButton
+          component={Link}
+          to="/new-event"
+          className={classes.iconButton}
         >
-          <SearchBar
-            className={classes.searchBar}
-            //value={this.state.value}
-            //onChange={(newValue) => this.setState({ value: newValue })}
-            //onRequestSearch={() => doSomethingWith(this.state.value)}
+          <img
+            src={addEventIcon}
+            alt="add-event-icon"
+            className={classes.iconImage}
           />
-          <IconButton
-            component={Link}
-            to="/new-event"
-            className={classes.iconButton}
-          >
-            <img
-              src={addEventIcon}
-              alt="add-event-icon"
-              className={classes.iconImage}
-            />
-          </IconButton>
-        </Box>
-        {/* <Box
-          display="flex"
-          flexDirection="column"
-          className={classes.container}
-        > */}
-          {events &&
-            events.map((event) => (
-              <Box
-                className={classes.minimalSpace}
-                display="flex"
-                flexDirection="row"
-                key={event.id}
-              >
-                <MediaControlCard event={event} key={event.id} />
-              </Box>
-            ))}
-        {/* </Box> */}
+        </IconButton>
       </Box>
+      {events ?
+        (events.length > 0 ? events.map((event) => (
+          <Box
+            className={classes.minimalSpace}
+            display="flex"
+            flexDirection="row"
+            key={event._id}
+          >
+            <MediaControlCard event={event} />
+          </Box>
+        )) 
+        :
+          <InfoText content={"No Results"}></InfoText>
+        )
+        :
+        <InfoText content={"Looks like there is no events yet"}></InfoText>
+      }
     </Box>
-  );
+  </Box>
+);
 };
 
 export default EventListView;

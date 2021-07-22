@@ -127,7 +127,7 @@ module.exports = {
       <div
          style="font-family:Roboto, Helvetica, sans-serif;font-size:16px;font-weight:300;line-height:24px;text-align:left;color:#616161;"
       >
-        <h5>Hello ${username}!</h5>
+        <h2>Hello ${username}!</h2>
           <p> Thanks you for joining Jammit. Click 
           <a href="${url}" style="color: #3498DB;">
              here

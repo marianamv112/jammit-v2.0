@@ -11,7 +11,7 @@ export const createNewEvent = (fields) => {
 
 export const getEvents = () => {
   return axios
-    .get(API_URL + "/events/", { withCredentials: true })
+    .get(API_URL + "/events/all", { withCredentials: true })
     .then((response) => response.data);
 };
 
@@ -28,11 +28,18 @@ export const getSingleEvent = (eventId) => {
 };
 
 export const updateEvent = (eventId, fieldsToUpdate) => {
+ 
   return axios
     .post(API_URL + "/events/edit-event/" + eventId, fieldsToUpdate, {
       withCredentials: true,
     })
-    .then((response) => response);
+    .then((response) => { console.log(response); return response});
 };
 
-export default { createNewEvent, getEvents, getUserEvents, getSingleEvent, updateEvent };
+export const searchEvent = (query) => {
+  return axios.get(API_URL + "/events/search/" + query, {
+    withCredentials: true,
+  }).then(response => response.data.results)
+}
+
+export default { createNewEvent, getEvents, getUserEvents, getSingleEvent, updateEvent, searchEvent };

@@ -1,15 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from './redux/index'
+import store, { history } from './redux/index'
+import { ConnectedRouter } from 'connected-react-router'
+
 
 ReactDOM.render(
+
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <App />
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("root")
 );

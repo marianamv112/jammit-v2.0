@@ -1,10 +1,12 @@
-import update from "../../services/users";
+import { update } from "../../services/users";
+import { push } from 'connected-react-router'
 
-export const updateUser = (username, fieldsToUpdate) => {
+
+export const updateUser = (userId, fieldsToUpdate) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    update(username, fieldsToUpdate)
-      .then((response) =>
+    update(userId, fieldsToUpdate)
+      .then((response) => {
         dispatch({
           type: "SET_USER",
           id: response._id,
@@ -14,17 +16,18 @@ export const updateUser = (username, fieldsToUpdate) => {
           profilePicture: response.profilePicture,
           socialMedia: response.socialMedia,
           loading: false,
-          pendingUser: null,
         })
-      )
+      }
+
+      ).then(() => {
+        dispatch(push(`/profile/${userId}`))
+      })
       .catch((err) => {
-        dispatch({ type: "SET_USER", currentUser: null });
         dispatch({
           loading: false,
-          pendingUser: null,
           type: "SET_ERROR",
           error: true,
-          message: err.response.data.message,
+          /* message: err.response.data.message, */
         });
       });
   };

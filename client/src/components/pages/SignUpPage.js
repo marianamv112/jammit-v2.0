@@ -57,7 +57,6 @@ const SignUpPage = ({
   errorMessage,
   registerUser,
   cleanError,
-  pendingUser,
 }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -152,9 +151,8 @@ const SignUpPage = ({
           }}
         />
         {error && <InfoText error content={errorMessage} />}
-        {pendingUser && <InfoText content={errorMessage} />}
       </Box>
-      {!pendingUser && (
+      
         <Box
           display="flex"
           flexDirection="column"
@@ -182,7 +180,7 @@ const SignUpPage = ({
             </Link>
           </Typography>
         </Box>
-      )}
+      
     </Box>
   );
 };
@@ -191,7 +189,6 @@ const mapStateToProps = (state) => {
   return {
     error: state.user.error,
     errorMessage: state.user.errorMessage,
-    pendingUser: state.user.pendingUser,
   };
 };
 

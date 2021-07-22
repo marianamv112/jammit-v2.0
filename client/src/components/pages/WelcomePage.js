@@ -13,8 +13,6 @@ import { bindActionCreators } from "redux";
 import {
   help_text,
   mobile_viewport,
-  tablet_viewport,
-  desktop_viewport,
 } from "../../config";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
@@ -22,9 +20,6 @@ import { Link as RouterLink } from "react-router-dom";
 const styles = () => ({
   mainContainer: {
     width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
     [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
       marginTop: "1em",
     },
@@ -89,7 +84,6 @@ const WelcomePage = ({
           display="flex"
           flexDirection="column"
           alignItems="center"
-          style={{ width: "100%" }}
           className={classes.mainContainer}
         >
           <Box display="flex" flexDirection="column" className={classes.container}>
@@ -97,7 +91,6 @@ const WelcomePage = ({
             <Typography
               variant="caption"
             >
-              {"You can now successfully "}
               <Link component={RouterLink} to="/login" variant="body2">
                 {"Login"}
               </Link>

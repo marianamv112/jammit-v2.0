@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
-import { mobile_viewport, tablet_viewport, desktop_viewport } from "../config";
+import { mobile_viewport, desktop_viewport } from "../config";
 import SearchBar from "./SearchBar";
 import eventListIcon from "../assets/icons/events_list.png";
-import lisbon_places from "../assets/places/places";
 import { Link } from "react-router-dom";
 import FloatingMediaCard from "../components/FloatingMediaCard";
 import pinIcon from "../assets/icons/location_pin_64.png";
-import googleSearch from "../services/map";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { setPlaces } from '../redux/actions/placesActions'
 
 const location = {
-  address: "Lisbon",
-  lat: 38.7071,
-  lng: -9.13549,
+  address: "Dijon",
+  lat: 47.321287336364094,
+  lng: 5.037542138835679,
 };
 
 const styles = makeStyles((theme) => ({
@@ -33,6 +34,7 @@ const styles = makeStyles((theme) => ({
   },
   iconButton: {
     width: 40,
+    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
   },
   iconImage: {
     maxWidth: "100%",
@@ -47,11 +49,12 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const Map = () => {
-  const [jamSessions, setJamSessions] = useState(lisbon_places);
+const Map = ({ setPlaces, jamSessions }) => {
+ /*  const [jamSessions, setJamSessions] = useState(jamPlaces); */
   const [map, setMap] = useState(null);
   const [place, setPlaceSearch] = useState("");
   const [cardVisible, setCardView] = useState(false);
+  const [cardPlace, setCardPlace] = useState(null);
   const classes = styles();
 
   const createMapOptions = (maps) => {
@@ -67,23 +70,26 @@ const Map = () => {
   };
 
   useEffect(() => {
-    if (window.google) {
+     if (window.google) {
       createMarkers()
-    }
-  }, [jamSessions])
+    } 
+  }, [map, jamSessions])
+
 
   const createMarkers = () => {
-    jamSessions && jamSessions.map((place) => {
+    jamSessions && jamSessions.map((jam) => {
+     
       const marker = new window.google.maps.Marker({
         position: {
-          lat: place.geometry.location.lat,
-          lng: place.geometry.location.lng,
+          lat: jam.latitude,
+          lng: jam.longitude,
         },
         icon: pinIcon,
         map: map,
       });
       marker.addListener("click", () => {
         setCardView(!cardVisible);
+        setCardPlace(jam);
       });
     });
   };
@@ -94,9 +100,7 @@ const Map = () => {
 
   const submitSearch = () => {
     if (place) {
-      googleSearch(place).then((res) => {
-        setJamSessions(res)
-      });
+      setPlaces(place)
     }
   };
 
@@ -109,11 +113,12 @@ const Map = () => {
         }}
         onGoogleApiLoaded={({ map, maps }) => {
           setMap(map)
-          
         }}
         yesIWantToUseGoogleMapApiInternals
         defaultCenter={location}
-        defaultZoom={17}
+        defaultZoom={5}
+        center={jamSessions && {lat: jamSessions[0].latitude, lng: jamSessions[1].longitude}}
+        zoom={jamSessions && 10}
       ></GoogleMapReact>
 
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -141,11 +146,26 @@ const Map = () => {
           </IconButton>
         </Box>
         <Box className={classes.card}>
-          {cardVisible && <FloatingMediaCard event={lisbon_places[0]} />}
+          {cardVisible && cardPlace && <FloatingMediaCard event={cardPlace} switch={() => setCardView(false)} />}
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Map;
+const mapStateToProps = (state) => {
+  return {
+    jamSessions: state.places.jamSessions,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      setPlaces,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

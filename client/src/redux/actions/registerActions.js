@@ -12,7 +12,6 @@ export const registerUser = (username, email, password) => {
       signup(username, email, password)
         .then((res) => {
           dispatch({ type: "NOT_LOADING" });
-          dispatch({ type: "SET_PENDING_USER", message: res.message });
         })
         .catch((err) => {
           dispatch({ type: "NOT_LOADING" });
@@ -61,14 +60,11 @@ export const loginUser = (email, password) => {
           profilePicture: response.profilePicture,
           socialMedia: response.socialMedia,
           loading: false,
-          pendingUser: null,
         });
       })
       .catch((err) => {
-        dispatch({ type: "SET_USER", currentUser: null });
         dispatch({
           loading: false,
-          pendingUser: null,
           type: "SET_ERROR",
           error: true,
           message: err.response.data.message,
@@ -83,13 +79,11 @@ export const logoutUser = () => {
     dispatch({ type: "LOADING" });
     logout()
       .then((response) => {
-        console.log(response)
         dispatch({
           type: "LOGOUT_USER",
         });
       })
       .catch((err) => {
-        console.log("err" + err)
         dispatch({
           type: "SET_ERROR",
           error: true,

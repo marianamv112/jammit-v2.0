@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import LandingPage from "./components/pages/LandingPage";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import LoginPage from "./components/pages/LoginPage";
 import SignUpPage from "./components/pages/SignUpPage";
 import { connect } from "react-redux";
@@ -16,25 +16,27 @@ import ViewEvent from "./components/pages/ViewEvent";
 import MapView from "./components/pages/MapView";
 import EventsListView from "./components/pages/EventsListView"
 import PlacesListView from "./components/pages/PlacesListView"
-
+import { ErrorBoundary } from "react-error-boundary"
+import ErrorFallback from "./components/ErrorFallback"
 
 function App({ loggedInUser }) {
   return (
-    <>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider theme={theme}>
         <Switch>
-          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/"
+            component={LandingPage}
+          />
           <Route
-            exact
             path="/login"
             render={() =>
-              loggedInUser ? <Redirect to="/profile" /> : <LoginPage />
+              loggedInUser ? <Redirect to={`/profile/${loggedInUser.id}`} /> : <LoginPage />
             }
           />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/confirm/:confirmationCode" component={WelcomePage} />
           <Route
-            path="/profile"
+            path="/profile/:userId"
             render={() => (loggedInUser ? <Profile /> : <Redirect to="/" />)}
           />
           <Route
@@ -74,9 +76,10 @@ function App({ loggedInUser }) {
         </Switch>
         {loggedInUser && <Navbar />}
       </ThemeProvider>
-    </>
+    </ErrorBoundary>
   );
 }
+
 
 const mapStateToProps = (state) => {
   return {
@@ -84,4 +87,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(App);
+export default withRouter(connect(mapStateToProps, null)(App));

@@ -4,20 +4,18 @@ import {
   makeStyles,
   Typography,
   IconButton,
-  ButtonBase,
+  CircularProgress,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
-  mobile_viewport,
   tablet_viewport,
-  desktop_viewport,
 } from "../../config";
 import addEventIcon from "../../assets/icons/plus.png";
 import editEventIcon from "../../assets/icons/pencil_icon.png";
-import SearchBar from "material-ui-search-bar";
 import MediaControlCard from "../MediaControlCard";
 import { getUserEvents } from "../../services/events";
 import { connect } from "react-redux";
+import InfoText from "../InfoText";
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -66,12 +64,12 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const UserEvents = ({ currentUser }) => {
+const UserEvents = ({ loggedInUser }) => {
   const classes = styles();
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(null);
+  const userId = window.location.pathname.split("/user-events/")[1];
 
   useEffect(() => {
-    const userId = window.location.pathname.split("/user-events/")[1];
     getUserEvents(userId).then((res) => setEvents(res.events));
   }, []);
 
@@ -93,7 +91,7 @@ const UserEvents = ({ currentUser }) => {
         <Box display="flex" flexDirection="row" className={classes.container}>
           <Box className={classes.title}>
             <Typography variant="h1">
-              {currentUser.username}'s events{" "}
+              {userId == loggedInUser.id ? loggedInUser.username : events[0].author.username}'s events
             </Typography>
           </Box>
           <IconButton
@@ -108,44 +106,43 @@ const UserEvents = ({ currentUser }) => {
             />
           </IconButton>
         </Box>
-
-        <SearchBar
-          className={classes.extraSpace}
-          //value={this.state.value}
-          //onChange={(newValue) => this.setState({ value: newValue })}
-          //onRequestSearch={() => doSomethingWith(this.state.value)}
-        />
-
-        {events &&
-          events.map((event) => (
-            <Box
-              className={classes.minimalSpace}
-              display="flex"
-              flexDirection="row"
-              key={event._id}
-            >
-              <MediaControlCard event={event} key={event.id} />
-
+        {events ?
+          events.length > 0 ?
+            events.map((event) => (
               <Box
+                className={classes.minimalSpace}
                 display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
+                flexDirection="row"
+                key={event._id}
               >
-                <IconButton
-                  component={Link}
-                  to={`/edit-event/${event._id}`}
-                  className={classes.editIconButton}
-                >
-                  <img
-                    src={editEventIcon}
-                    alt="edit-event-icon"
-                    className={classes.iconImage}
-                  />
-                </IconButton>
+                <MediaControlCard event={event} key={event.id} />
+
+                {
+                  loggedInUser.id == userId &&
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      component={Link}
+                      to={`/edit-event/${event._id}`}
+                      className={classes.editIconButton}
+                    >
+                      <img
+                        src={editEventIcon}
+                        alt="edit-event-icon"
+                        className={classes.iconImage}
+                      />
+                    </IconButton>
+                  </Box>}
               </Box>
-            </Box>
-          ))}
+            ))
+            : <InfoText content={"This user has no events"} />
+          :
+          <CircularProgress />
+        }
       </Box>
     </Box>
   );
@@ -153,7 +150,7 @@ const UserEvents = ({ currentUser }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.user.currentUser,
+    loggedInUser: state.user.currentUser,
   };
 };
 

@@ -8,8 +8,8 @@ const AWS = require("aws-sdk");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-userRoutes.get("/:username", (req, res, next) => {
-  User.findOne({ username: req.params.username }, (err, foundUser) => {
+userRoutes.get("/:userId", (req, res, next) => {
+  User.findOne({ _id: req.params.userId }, (err, foundUser) => {
     if (err) {
       res.status(500).json({ message: "Something went wrong" });
       return;
@@ -45,9 +45,10 @@ const uploadFile = (buffer, name, type) => {
   });
 };
 
-userRoutes.post("/:username/edit", upload.single("file"), (req, res, next) => {
+userRoutes.post("/:userId/edit", upload.single("file"), (req, res, next) => {
   const { username, bio, instruments, instagram, facebook, spotify, youtube } = req.body;
   const socialMedia = { instagram, facebook, spotify, youtube }
+  const userId = req.params.userId
 
   let profilePicture;
 
@@ -59,28 +60,30 @@ userRoutes.post("/:username/edit", upload.single("file"), (req, res, next) => {
     profilePicture = req.user.profilePicture;
   }
 
-  User.findOne({ username: req.user.username }, (err, foundUser) => {
-    
-    if (err) {
-      res.status(500).json({ message: "Something went wrong" });
-      return;
-    }
+  if (req.user._id == userId) {
 
-    if (foundUser) {
-      User.findByIdAndUpdate(
-        foundUser.id,
-        { username, bio, instruments, profilePicture, socialMedia },
-        { new: true }
-      )
-        .then((updatedUser) => res.status(200).json(updatedUser))
-        .catch((error) =>
-          res.status(500).json({ message: "Could not update user" })
-        );
-      return;
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  });
+    User.findOne({ _id: userId }, (err, foundUser) => {
+      if (err) {
+        res.status(500).json({ message: "Something went wrong" });
+        return;
+      }
+      if (foundUser) {
+        User.findByIdAndUpdate(
+          foundUser.id,
+          { username, bio, instruments, profilePicture, socialMedia },
+          { new: true }
+        )
+          .then((updatedUser) => res.status(200).json(updatedUser))
+          .catch((error) =>
+            res.status(500).json({ message: "Could not update user" })
+          );
+        return;
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    });
+  }
+
 });
 
 module.exports = userRoutes;

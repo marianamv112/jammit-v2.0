@@ -47,10 +47,11 @@ const useStyles = makeStyles((theme) => ({
 const FloatingMediaCard = (props) => {
   const classes = useStyles();
   const event = props.event;
+  const close = props.switch;
 
   return (
     <Card className={classes.root}>
-      <IconButton aria-label="close" classeName={classes.closeButton}> 
+      <IconButton aria-label="close" classeName={classes.closeButton} onClick={close}> 
         <CloseIcon />
       </IconButton>
 

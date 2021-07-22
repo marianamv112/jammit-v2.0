@@ -52,7 +52,6 @@ const theme = createMuiTheme({
     body1: {
       fontFamily: ["Roboto", "sans-serif"].join(","),
       fontWeight: 400,
-     
     },
     body2: {
       fontFamily: ["Roboto", "sans-serif"].join(","),

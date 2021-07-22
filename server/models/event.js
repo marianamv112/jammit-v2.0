@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const eventSchema = new Schema({
     author: {
-        type: String, 
+        type: Schema.Types.ObjectId,
+        ref: 'User', 
         required: true,
     },
     title: {
@@ -19,9 +20,15 @@ const eventSchema = new Schema({
     },
     place: {
         type: String,
+        required: true,
     },
     location: {
         type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
     },
     instruments: {
         type: [String],
@@ -29,5 +36,7 @@ const eventSchema = new Schema({
     },
 })
 
+eventSchema.index({"'$**'": "text"})
 const Event = mongoose.model('Event', eventSchema)
+
 module.exports = Event;

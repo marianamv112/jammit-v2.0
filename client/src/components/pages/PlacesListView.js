@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
-  mobile_viewport,
   tablet_viewport,
-  desktop_viewport,
 } from "../../config";
-import addEventIcon from "../../assets/icons/plus.png";
-import editEventIcon from "../../assets/icons/pencil_icon.png";
-import SearchBar from "material-ui-search-bar";
+import SearchBar from "../SearchBar";
 import MediaControlCard from "../MediaControlCard";
-import lisbon_places from "../../assets/places/places";
 import MapIcon from "../../assets/icons/placeholder-in-a-circle-outline.png";
 import clsx from 'clsx'
+import { connect } from "react-redux"
+import InfoText from "../InfoText";
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -28,7 +25,7 @@ const styles = makeStyles((theme) => ({
   },
   container: {
     height: "fit-content",
-    minwidth: 365,
+    minWidth: 365,
     maxWidth: 435,
     [`@media (max-width: ${tablet_viewport}px)`]: {
       minWidth: 300,
@@ -58,9 +55,8 @@ const styles = makeStyles((theme) => ({
 
 }));
 
-const PlaceListView = () => {
+const PlaceListView = ({ jamSessions }) => {
   const classes = styles();
-  const [events, setEvents] = useState(lisbon_places);
 
   return (
     <Box
@@ -86,9 +82,9 @@ const PlaceListView = () => {
         >
           <SearchBar
             className={classes.searchBar}
-            //value={this.state.value}
-            //onChange={(newValue) => this.setState({ value: newValue })}
-            //onRequestSearch={() => doSomethingWith(this.state.value)}
+          //value={this.state.value}
+          //onChange={(newValue) => this.setState({ value: newValue })}
+          //onRequestSearch={() => doSomethingWith(this.state.value)}
           />
           <IconButton
             component={Link}
@@ -98,26 +94,28 @@ const PlaceListView = () => {
             <img src={MapIcon} alt="map-icon" className={classes.iconImage} />
           </IconButton>
         </Box>
-        {/* <Box
-          display="flex"
-          flexDirection="column"
-          className={classes.container}
-        > */}
-          {events &&
-            events.map((event) => (
-              <Box
-                className={classes.minimalSpace}
-                display="flex"
-                flexDirection="row"
-                key={event.id}
-              >
-                <MediaControlCard event={event} key={event.id} />
-              </Box>
-            ))}
-        {/* </Box> */}
+        {jamSessions ?
+          jamSessions.map((place) => (
+            <Box
+              className={classes.minimalSpace}
+              display="flex"
+              flexDirection="row"
+              key={place._id}
+            >
+              <MediaControlCard event={place} key={place.id} />
+            </Box>
+          ))
+          :
+          <InfoText content={"Your search returned no places"}></InfoText>}
       </Box>
     </Box>
   );
 };
 
-export default PlaceListView;
+const mapStateToProps = (state) => {
+  return {
+    jamSessions: state.places.jamSessions
+  }
+}
+
+export default connect(mapStateToProps, null)(PlaceListView);

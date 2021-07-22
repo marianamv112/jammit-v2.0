@@ -1,5 +1,5 @@
-import React from "react";
-import { Paper, makeStyles, Typography, IconButton } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Paper, makeStyles, Typography, IconButton, CircularProgress } from "@material-ui/core";
 import ProfilePic from "../ProfilePic";
 import editProfileIcon from "../../assets/icons/edit_user_profile.png";
 import eventsIcon from "../../assets/icons/paper_colored.png";
@@ -10,11 +10,11 @@ import spotifyIcon from "../../assets/icons/esboco-spotify.png";
 import {
   mobile_viewport,
   tablet_viewport,
-  desktop_viewport,
 } from "../../config";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { getUser } from "../../services/users";
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -55,7 +55,8 @@ const styles = makeStyles((theme) => ({
   iconButton: {
     width: 60,
     padding: 0,
-    margin: 10
+    margin: 10,
+    filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
   },
   iconImage: {
     width: "100%",
@@ -116,120 +117,139 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ loggedInUser }) => {
   const classes = styles();
- 
+  const currentProfileId = window.location.pathname.split("/profile/")[1];
+  const [user, setUserProfile] = useState(null)
+
+  useEffect(() => {
+    getUser(currentProfileId).then(user => setUserProfile(user))
+  }, [])
+
   return (
+
     <div className={classes.mainContainer}>
-      <div className={classes.iconsContainer}>
-        <IconButton
-          component={Link}
-          to={`/user-events/${currentUser.id}`}
-          className={classes.iconButton}
-        >
-          <img
-            src={eventsIcon}
-            alt="events-icon"
-            className={classes.iconImage}
-          />
-        </IconButton>
-        <IconButton
-          component={Link}
-          to="/edit-profile"
-          className={classes.iconButton}
-        >
-          <img
-            src={editProfileIcon}
-            alt="edit-profile-icon"
-            className={classes.iconImage}
-          />
-        </IconButton>
-      </div>
-      <Paper className={classes.homePaper} elevation={6}>
-        <ProfilePic image={currentUser.profilePicture} />
-        <Typography className={clsx(classes.title, classes.username)}>
-          {currentUser && currentUser.username}
-        </Typography>
-        <Typography>{currentUser && currentUser.bio}</Typography>
-        <Typography className={classes.title}>
-          {currentUser.instruments &&
-            currentUser.instruments[0] !== "" &&
-            "Instruments:"}
-        </Typography>
-        <div className={classes.instrumentsContainer}>
-          {currentUser.instruments &&
-            currentUser.instruments.length > 0 &&
-            currentUser.instruments.map((instrument) => {
-              return (
-                instrument !== "" && (
-                  <div className={classes.instruments}>
-                    <Typography
-                      style={{ fontSize: "0.8rem", fontWeight: "bold" }}
-                    >
-                      {instrument}
-                    </Typography>
-                  </div>
-                )
-              );
-            })}
-        </div>
-        <Typography className={classes.followMe}>
-          {currentUser.socialMedia && "Follow me on:"}
-        </Typography>
-        <div className={classes.socialMediaContainer}>
-          {currentUser.socialMedia && currentUser.socialMedia.facebook && (
+      {user ?
+        <>
+          <div className={classes.iconsContainer}>
             <IconButton
-              href={`https://www.facebook.com/people/${currentUser.socialMedia.instagram}`}
+              component={Link}
+              to={`/user-events/${currentProfileId}`}
+              className={classes.iconButton}
             >
               <img
-                src={facebookIcon}
-                alt="facebook-icon"
-                className={classes.socialMediaIcon}
+                src={eventsIcon}
+                alt="events-icon"
+                className={classes.iconImage}
               />
             </IconButton>
-          )}
-          {currentUser.socialMedia && currentUser.socialMedia.instagram && (
-            <IconButton
-              href={`https://www.instagram.com/${currentUser.socialMedia.instagram}`}
-            >
-              <img
-                src={instagramIcon}
-                alt="instagram-icon"
-                className={classes.socialMediaIcon}
-              />
-            </IconButton>
-          )}
-          {currentUser.socialMedia && currentUser.socialMedia.youtube && (
-            <IconButton
-              href={`https://www.youtube.com/${currentUser.socialMedia.instagram}`}
-            >
-              <img
-                src={youtubeIcon}
-                alt="youtube-icon"
-                className={classes.socialMediaIcon}
-              />
-            </IconButton>
-          )}
-          {currentUser.socialMedia && currentUser.socialMedia.spotify && (
-            <IconButton
-              href={`https://open.spotify.com/user/${currentUser.socialMedia.spotify}`}
-            >
-              <img
-                src={spotifyIcon}
-                alt="spotify-icon"
-                className={classes.socialMediaIcon}
-              />
-            </IconButton>
-          )}
-        </div>
-      </Paper>
+            {
+              currentProfileId === loggedInUser.id &&
+              <IconButton
+                component={Link}
+                to="/edit-profile"
+                className={classes.iconButton}
+              >
+                <img
+                  src={editProfileIcon}
+                  alt="edit-profile-icon"
+                  className={classes.iconImage}
+                />
+              </IconButton>
+            }
+          </div>
+          <Paper className={classes.homePaper} elevation={6}>
+            <ProfilePic image={user.profilePicture} />
+            <Typography className={clsx(classes.title, classes.username)}>
+              {user && user.username}
+            </Typography>
+            <Typography variant="body1">{user && user.bio}</Typography>
+            <Typography className={classes.title}>
+              {user.instruments &&
+                user.instruments[0] !== "" &&
+                "Instruments:"}
+            </Typography>
+            <div className={classes.instrumentsContainer}>
+              {user.instruments &&
+                user.instruments.length > 0 &&
+                user.instruments.map((instrument, index) => {
+                  return (
+                    instrument !== "" && (
+                      <div className={classes.instruments} key={index}>
+                        <Typography
+                          style={{ fontSize: "0.8rem", fontWeight: "bold" }}
+                        >
+                          {instrument}
+                        </Typography>
+                      </div>
+                    )
+                  );
+                })}
+            </div>
+            <Typography className={classes.followMe}>
+              {(user.socialMedia.facebook ||
+                user.socialMedia.instagram ||
+                user.socialMedia.spotify ||
+                user.socialMedia.youtube) &&
+                "Follow me on:"}
+            </Typography>
+            <div className={classes.socialMediaContainer}>
+              {user.socialMedia && user.socialMedia.facebook && (
+                <IconButton
+                  href={`https://www.facebook.com/people/${user.socialMedia.facebook}`}
+                >
+                  <img
+                    src={facebookIcon}
+                    alt="facebook-icon"
+                    className={classes.socialMediaIcon}
+                  />
+                </IconButton>
+              )}
+              {user.socialMedia && user.socialMedia.instagram && (
+                <IconButton
+                  href={`https://www.instagram.com/${user.socialMedia.instagram}`}
+                >
+                  <img
+                    src={instagramIcon}
+                    alt="instagram-icon"
+                    className={classes.socialMediaIcon}
+                  />
+                </IconButton>
+              )}
+              {user.socialMedia && user.socialMedia.youtube && (
+                <IconButton
+                  href={`https://www.youtube.com/${user.socialMedia.youtube}`}
+                >
+                  <img
+                    src={youtubeIcon}
+                    alt="youtube-icon"
+                    className={classes.socialMediaIcon}
+                  />
+                </IconButton>
+              )}
+              {user.socialMedia && user.socialMedia.spotify && (
+                <IconButton
+                  href={`https://open.spotify.com/user/${user.socialMedia.spotify}`}
+                >
+                  <img
+                    src={spotifyIcon}
+                    alt="spotify-icon"
+                    className={classes.socialMediaIcon}
+                  />
+                </IconButton>
+              )}
+            </div>
+          </Paper>
+        </>
+        :
+        <CircularProgress />}
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.user.currentUser,
+    loggedInUser: state.user.currentUser,
   };
 };
 
