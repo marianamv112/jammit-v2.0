@@ -8,11 +8,10 @@ import {
 } from "@material-ui/core";
 import tablet_viewport from "../../config";
 import PageTitle from "../PageTitle";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
-import { createNewEvent } from "../../services/events";
+import eventServices from "../../services/events";
 import { useHistory } from "react-router-dom";
 
 const styles = makeStyles((theme) => ({
@@ -169,7 +168,7 @@ const NewEvent = ({ currentUser }) => {
         );
       }
 
-      createNewEvent(formData).then((res) => {
+      eventServices.createNewEvent(formData).then((res) => {
         if (res.status === 200) {
           history.push(`/user-events/${currentUser.id}`);
         }

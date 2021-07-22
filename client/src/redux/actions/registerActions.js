@@ -1,15 +1,10 @@
-import {
-  verifyUser,
-  login,
-  signup,
-  logout
-} from "../../services/auth";
+import authServices from "../../services/auth";
 
-export const registerUser = (username, email, password) => {
+const registerUser = (username, email, password) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
     if (username && email && password) {
-      signup(username, email, password)
+      authServices.signup(username, email, password)
         .then((res) => {
           dispatch({ type: "NOT_LOADING" });
         })
@@ -25,10 +20,10 @@ export const registerUser = (username, email, password) => {
   };
 };
 
-export const validateUser = (code) => {
+const validateUser = (code) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    verifyUser(code)
+    authServices.verifyUser(code)
       .then((res) => {
         dispatch({
           type: "SET_ERROR",
@@ -46,10 +41,10 @@ export const validateUser = (code) => {
   };
 };
 
-export const loginUser = (email, password) => {
+const loginUser = (email, password) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    login(email, password)
+    authServices.login(email, password)
       .then((response) => {
         dispatch({
           type: "SET_USER",
@@ -73,11 +68,10 @@ export const loginUser = (email, password) => {
   };
 };
 
-export const logoutUser = () => {
-  console.log("check")
+const logoutUser = () => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    logout()
+    authServices.logout()
       .then((response) => {
         dispatch({
           type: "LOGOUT_USER",
@@ -93,16 +87,18 @@ export const logoutUser = () => {
   };
 };
 
-export const cleanError = () => {
+const cleanError = () => {
   return (dispatch) => {
     dispatch({ type: "SET_ERROR", error: false });
   };
 };
 
-export default {
+const registerActions = {
   validateUser,
   loginUser,
   cleanError,
   registerUser,
   logoutUser,
 };
+
+export default registerActions;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
-import { mobile_viewport, desktop_viewport } from "../config";
+import configs from "../config";
 import SearchBar from "./SearchBar";
 import eventListIcon from "../assets/icons/events_list.png";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const location = {
 
 const styles = makeStyles((theme) => ({
   googleMap: {
-    [`@media (max-width: ${desktop_viewport}px)`]: {
+    [`@media (max-width: ${configs.desktop_viewport}px)`]: {
       width: 620,
       height: "95vh",
     },
@@ -43,14 +43,14 @@ const styles = makeStyles((theme) => ({
     position: "absolute",
     top: "75%",
     width: "70%",
-    [`@media (max-width: ${mobile_viewport}px)`]: {
+    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
       top: "71%",
     },
   },
 }));
 
 const Map = ({ setPlaces, jamSessions }) => {
- /*  const [jamSessions, setJamSessions] = useState(jamPlaces); */
+  /*  const [jamSessions, setJamSessions] = useState(jamPlaces); */
   const [map, setMap] = useState(null);
   const [place, setPlaceSearch] = useState("");
   const [cardVisible, setCardView] = useState(false);
@@ -59,7 +59,6 @@ const Map = ({ setPlaces, jamSessions }) => {
 
   const createMapOptions = (maps) => {
     return {
-      //mapTypeControl: false,
       zoomControl: false,
       mapTypeControl: false,
       scaleControl: false,
@@ -69,16 +68,11 @@ const Map = ({ setPlaces, jamSessions }) => {
     };
   };
 
-  useEffect(() => {
-     if (window.google) {
-      createMarkers()
-    } 
-  }, [map, jamSessions])
+
 
 
   const createMarkers = () => {
     jamSessions && jamSessions.map((jam) => {
-     
       const marker = new window.google.maps.Marker({
         position: {
           lat: jam.latitude,
@@ -91,8 +85,17 @@ const Map = ({ setPlaces, jamSessions }) => {
         setCardView(!cardVisible);
         setCardPlace(jam);
       });
+      // eslint-disable-next-line array-callback-return
+      return;
     });
   };
+
+  useEffect(() => {
+    if (window.google) {
+      createMarkers()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, jamSessions])
 
   const handleSearch = (placeQuery) => {
     setPlaceSearch(placeQuery);
@@ -117,7 +120,7 @@ const Map = ({ setPlaces, jamSessions }) => {
         yesIWantToUseGoogleMapApiInternals
         defaultCenter={location}
         defaultZoom={5}
-        center={jamSessions && {lat: jamSessions[0].latitude, lng: jamSessions[1].longitude}}
+        center={jamSessions && { lat: jamSessions[0].latitude, lng: jamSessions[1].longitude }}
         zoom={jamSessions && 10}
       ></GoogleMapReact>
 

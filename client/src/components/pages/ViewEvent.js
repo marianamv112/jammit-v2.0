@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Box, makeStyles, IconButton, Typography, CircularProgress, ButtonBase } from "@material-ui/core";
-import { getSingleEvent } from "../../services/events";
+import eventServices from "../../services/events";
 import { Link } from "react-router-dom";
 import editEventIcon from "../../assets/icons/pencil_icon.png";
-import {
-  tablet_viewport,
-  desktop_viewport,
-} from "../../config";
+import configs from "../../config";
 import EventIcon from "@material-ui/icons/Event";
 import PlaceIcon from "@material-ui/icons/Place";
 import clsx from "clsx";
@@ -26,13 +23,13 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
   },
   container: {
     height: "fit-content",
-    [`@media (min-width: ${tablet_viewport}px) and (max-width: ${desktop_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px) and (max-width: ${configs.desktop_viewport}px)`]: {
       minWidth: 438,
       maxWidth: 384,
     },
@@ -82,10 +79,10 @@ const ViewEvent = ({ loggedInUser }) => {
   const eventId = window.location.pathname.split("/view-event/")[1];
 
   useEffect(() => {
-    getSingleEvent(eventId).then((res) => {
+    eventServices.getSingleEvent(eventId).then((res) => {
       setEvent(res.event)
     });
-  }, []);
+  }, [eventId]);
 
   return (
     event ?

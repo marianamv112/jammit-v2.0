@@ -1,11 +1,11 @@
 import { Box, makeStyles } from "@material-ui/core"
-import { mobile_viewport } from "../config";
+import configs from "../config";
 import InfoText from "./InfoText"
 
 const styles = () => makeStyles({
     mainContainer: {
         width: "100%",
-        [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
+        [`@media (min-width: ${configs.mobile_viewport}px && max-width: ${configs.mobile_viewport}px)`]: {
             marginTop: "1em",
         },
         marginTop: 10,

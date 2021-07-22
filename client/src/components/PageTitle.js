@@ -4,9 +4,6 @@ import clsx from "clsx";
 
 const styles = makeStyles((theme) => ({
   title: {
-    fontFamily: theme.typography.fontFamily["Roboto"],
-  },
-  title: {
     marginTop: 20,
     marginBottom: 20,
     width: "100%",

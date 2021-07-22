@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Typography, Link, Box, makeStyles } from "@material-ui/core";
 import ActionButton from "../ActionButton";
-import {
-  mobile_viewport,
-  email_format,
-} from "../../config";
+import configs from "../../config";
 import PasswordField from "../PasswordField";
 import UsernameField from "../UsernameField";
 import EmailField from "../EmailField";
@@ -13,7 +10,7 @@ import { Link as RouterLink } from "react-router-dom";
 import InfoText from "../InfoText";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { cleanError, registerUser } from "../../redux/actions/registerActions";
+import registerActions from "../../redux/actions/registerActions";
 import clsx from "clsx" 
 
 const styles = makeStyles((theme) => ({
@@ -31,7 +28,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
+    [`@media (min-width: ${configs.mobile_viewport}px && max-width: ${configs.mobile_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -42,7 +39,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     width: 365,
-    [`@media (max-width: ${mobile_viewport}px)`]: {
+    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
       width: 300
     },
   },
@@ -88,7 +85,7 @@ const SignUpPage = ({
     if (!email) {
       setMissingEmail(true);
     }
-    if (email && !email.match(email_format)) {
+    if (email && !email.match(configs.email_format)) {
       setWrongEmailFormat(true);
     }
 
@@ -96,7 +93,7 @@ const SignUpPage = ({
       setMissingPassword(true);
     }
 
-    if (username && email && password && email.match(email_format)) {
+    if (username && email && password && email.match(configs.email_format)) {
       registerUser(username, email, password);
     }
   };
@@ -195,8 +192,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      registerUser,
-      cleanError,
+      registerUser: registerActions.registerUser,
+      cleanError: registerActions.cleanError,
     },
     dispatch
   );

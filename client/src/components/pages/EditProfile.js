@@ -9,12 +9,11 @@ import {
 } from "@material-ui/core";
 import tablet_viewport from "../../config";
 import PageTitle from "../PageTitle";
-import { cleanError } from "../../redux/actions/registerActions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
-import { updateUser } from "../../redux/actions/userActions";
+import registerActions from "../../redux/actions/userActions";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -408,8 +407,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      cleanError,
-      updateUser,
+      cleanError: registerActions.cleanError,
+      updateUser: registerActions.updateUser,
     },
     dispatch
   );

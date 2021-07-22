@@ -1,11 +1,10 @@
-import { update } from "../../services/users";
+import userServices from "../../services/users";
 import { push } from 'connected-react-router'
 
-
-export const updateUser = (userId, fieldsToUpdate) => {
+const updateUser = (userId, fieldsToUpdate) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
-    update(userId, fieldsToUpdate)
+    userServices.update(userId, fieldsToUpdate)
       .then((response) => {
         dispatch({
           type: "SET_USER",
@@ -33,4 +32,4 @@ export const updateUser = (userId, fieldsToUpdate) => {
   };
 };
 
-export default { updateUser };
+export default updateUser;

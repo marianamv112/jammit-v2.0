@@ -7,13 +7,11 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import {
-  tablet_viewport,
-} from "../../config";
+import configs from "../../config";
 import addEventIcon from "../../assets/icons/plus.png";
 import editEventIcon from "../../assets/icons/pencil_icon.png";
 import MediaControlCard from "../MediaControlCard";
-import { getUserEvents } from "../../services/events";
+import eventServices from "../../services/events";
 import { connect } from "react-redux";
 import InfoText from "../InfoText";
 
@@ -23,7 +21,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px && max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -33,7 +31,7 @@ const styles = makeStyles((theme) => ({
     height: "fit-content",
     minWidth: 365,
     maxWidth: 435,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 300,
       maxWidth: 370,
     },
@@ -70,8 +68,8 @@ const UserEvents = ({ loggedInUser }) => {
   const userId = window.location.pathname.split("/user-events/")[1];
 
   useEffect(() => {
-    getUserEvents(userId).then((res) => setEvents(res.events));
-  }, []);
+    eventServices.getUserEvents(userId).then((res) => setEvents(res.events));
+  }, [userId]);
 
   return (
     <Box
@@ -91,7 +89,7 @@ const UserEvents = ({ loggedInUser }) => {
         <Box display="flex" flexDirection="row" className={classes.container}>
           <Box className={classes.title}>
             <Typography variant="h1">
-              {userId == loggedInUser.id ? loggedInUser.username : events[0].author.username}'s events
+              {userId === loggedInUser.id ? loggedInUser.username : events[0].author.username}'s events
             </Typography>
           </Box>
           <IconButton
@@ -118,7 +116,7 @@ const UserEvents = ({ loggedInUser }) => {
                 <MediaControlCard event={event} key={event.id} />
 
                 {
-                  loggedInUser.id == userId &&
+                  loggedInUser.id === userId &&
                   <Box
                     display="flex"
                     flexDirection="column"

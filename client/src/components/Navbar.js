@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles, Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import paperLineIcon from "../assets/icons/paper_line_icon.png";
 import paperFillIcon from "../assets/icons/paper_fill_icon.png";
 import jazzLineIcon from "../assets/icons/jazz_line_icon.png";
@@ -8,7 +8,7 @@ import jazzFillIcon from "../assets/icons/jazz_fill_icon.png";
 import userLineIcon from "../assets/icons/user_line_icon.png";
 import userFillIcon from "../assets/icons/user_fill_icon.png";
 import logoutIcon from "../assets/icons/logout.png";
-import { logoutUser } from "../redux/actions/registerActions";
+import registerActions from "../redux/actions/registerActions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -138,7 +138,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      logoutUser,
+      logoutUser: registerActions.logoutUser,
     },
     dispatch
   );

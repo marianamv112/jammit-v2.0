@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1a8e8fc7.chunk.css",
+    "main.js": "/static/js/main.f1b59218.chunk.js",
+    "main.js.map": "/static/js/main.f1b59218.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c5af13af.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c5af13af.js.map",
+    "static/js/2.40e41e14.chunk.js": "/static/js/2.40e41e14.chunk.js",
+    "static/js/2.40e41e14.chunk.js.map": "/static/js/2.40e41e14.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.1a8e8fc7.chunk.css.map": "/static/css/main.1a8e8fc7.chunk.css.map",
+    "static/js/2.40e41e14.chunk.js.LICENSE.txt": "/static/js/2.40e41e14.chunk.js.LICENSE.txt",
+    "static/media/Jammit_logo-nobg.09fc2bbd.png": "/static/media/Jammit_logo-nobg.09fc2bbd.png",
+    "static/media/esboco-spotify.659f040d.png": "/static/media/esboco-spotify.659f040d.png",
+    "static/media/instagram-esbocado.e719d8b2.png": "/static/media/instagram-esbocado.e719d8b2.png",
+    "static/media/jazz_fill_icon.4cf01355.png": "/static/media/jazz_fill_icon.4cf01355.png",
+    "static/media/jazz_line_icon.f8bc3188.png": "/static/media/jazz_line_icon.f8bc3188.png",
+    "static/media/paper_colored.38d398e6.png": "/static/media/paper_colored.38d398e6.png",
+    "static/media/paper_fill_icon.f38c67f1.png": "/static/media/paper_fill_icon.f38c67f1.png",
+    "static/media/paper_line_icon.306cf1d9.png": "/static/media/paper_line_icon.306cf1d9.png",
+    "static/media/user_fill_icon.96d9e284.png": "/static/media/user_fill_icon.96d9e284.png",
+    "static/media/user_line_icon.f55f6e9e.png": "/static/media/user_line_icon.f55f6e9e.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c5af13af.js",
+    "static/js/2.40e41e14.chunk.js",
+    "static/css/main.1a8e8fc7.chunk.css",
+    "static/js/main.f1b59218.chunk.js"
+  ]
+}

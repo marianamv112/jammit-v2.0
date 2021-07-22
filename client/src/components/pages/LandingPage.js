@@ -1,8 +1,6 @@
 import React from "react";
 import jammitLogo from "../../assets/images/Jammit_logo-nobg.png";
-import {
-  mobile_viewport,
-} from "../../config";
+import configs from "../../config";
 import { Link as RouterLink } from "react-router-dom";
 import { Typography, Paper, Link, makeStyles, Box } from "@material-ui/core";
 
@@ -28,7 +26,7 @@ const styles = makeStyles((theme) => ({
     left: "15%",
     fontSize: "5rem",
     animation: "$color-change 1s infinite",
-    [`@media (max-width: ${mobile_viewport}px)`]: {
+    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
       fontSize: "4rem",
       left: "10%",
     },

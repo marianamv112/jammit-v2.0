@@ -57,9 +57,10 @@ app.use("/api/*", (req, res, next) => {
   next(err);
 })
 
+
 // For any other routes, redirect to the index.html file of React
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/public/index.html"));
+  res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

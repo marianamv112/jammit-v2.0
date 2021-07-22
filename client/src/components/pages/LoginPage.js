@@ -8,13 +8,11 @@ import {
 } from "@material-ui/core";
 import ActionButton from "../ActionButton";
 import EmailField from "../EmailField";
-import {
-  tablet_viewport,
-} from "../../config";
+import configs from "../../config";
 import PasswordField from "../PasswordField";
 import PageTitle from "../PageTitle";
 import { Link as RouterLink } from "react-router-dom";
-import { loginUser, cleanError } from "../../redux/actions/registerActions";
+import registerActions from "../../redux/actions/registerActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import InfoText from "../InfoText";
@@ -26,7 +24,7 @@ const styles = () => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px && max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -37,7 +35,7 @@ const styles = () => ({
     display: "flex",
     justifyContent: "space-between",
     minWidth: 365,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 300
     },
   },
@@ -164,8 +162,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      loginUser,
-      cleanError,
+      loginUser: registerActions.loginUser,
+      cleanError: registerActions.cleanError,
     },
     dispatch
   );

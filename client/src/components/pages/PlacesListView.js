@@ -1,9 +1,7 @@
 import React from "react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import {
-  tablet_viewport,
-} from "../../config";
+import configs from "../../config";
 import SearchBar from "../SearchBar";
 import MediaControlCard from "../MediaControlCard";
 import MapIcon from "../../assets/icons/placeholder-in-a-circle-outline.png";
@@ -17,7 +15,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px && max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -27,7 +25,7 @@ const styles = makeStyles((theme) => ({
     height: "fit-content",
     minWidth: 365,
     maxWidth: 435,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 300,
       maxWidth: 370,
     },

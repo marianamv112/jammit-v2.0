@@ -10,7 +10,7 @@ import tablet_viewport from "../../config";
 import PageTitle from "../PageTitle";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
-import { updateEvent, getSingleEvent } from "../../services/events";
+import eventServices from "../../services/events";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux"
 
@@ -84,7 +84,7 @@ const EditEvent = ({ currentUser }) => {
   const history = useHistory();
 
   useEffect(() => {
-    getSingleEvent(eventId).then((res) => {
+    eventServices.getSingleEvent(eventId).then((res) => {
       setEventTitle(res.event.title);
       setDescription(res.event.description);
       setLocation(res.event.location);
@@ -93,7 +93,7 @@ const EditEvent = ({ currentUser }) => {
       setImageURL(res.event.imageURL);
       setDate(res.event.date.split('T')[0])
     });
-  }, []);
+  }, [eventId]);
 
   const handleEventTitle = (eventTitle) => {
     setEventTitle(eventTitle);
@@ -179,7 +179,7 @@ const EditEvent = ({ currentUser }) => {
           formData.append("instruments", instrument)
         );
       }
-      updateEvent(eventId, formData).then((res) => {
+      eventServices.updateEvent(eventId, formData).then((res) => {
         if (res.status === 200) {
           history.push(`/user-events/${currentUser.id}`);
         }

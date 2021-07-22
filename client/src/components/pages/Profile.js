@@ -7,14 +7,11 @@ import facebookIcon from "../../assets/icons/facebook.png";
 import instagramIcon from "../../assets/icons/instagram-esbocado.png";
 import youtubeIcon from "../../assets/icons/youtube.png";
 import spotifyIcon from "../../assets/icons/esboco-spotify.png";
-import {
-  mobile_viewport,
-  tablet_viewport,
-} from "../../config";
+import configs from "../../config";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getUser } from "../../services/users";
+import userServices from "../../services/users";
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -22,7 +19,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px && max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -37,7 +34,7 @@ const styles = makeStyles((theme) => ({
     padding: "2em",
     borderRadius: 15,
     minWidth: 300,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 235
     },
     minHeight: "62vh"
@@ -47,7 +44,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     minWidth: 365,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 300
     },
     marginTop: 10,
@@ -68,7 +65,7 @@ const styles = makeStyles((theme) => ({
   },
   followMe: {
     fontWeight: "bold",
-    [`@media (min-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
       marginBottom: "1em",
     },
@@ -86,11 +83,11 @@ const styles = makeStyles((theme) => ({
     paddingBottom: "0.3em",
     marginBottom: "0.8em",
     marginRight: "1em",
-    [`@media (min-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px)`]: {
       paddingRight: "1.5em",
       paddingLeft: "1.5em",
     },
-    [`@media (max-width: ${mobile_viewport}px)`]: {
+    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
       paddingRight: "1em",
       paddingLeft: "1em",
     },
@@ -111,7 +108,7 @@ const styles = makeStyles((theme) => ({
   username: {
     textAlign: "center",
     marginTop: 100,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: 70
     },
   },
@@ -123,8 +120,8 @@ const Profile = ({ loggedInUser }) => {
   const [user, setUserProfile] = useState(null)
 
   useEffect(() => {
-    getUser(currentProfileId).then(user => setUserProfile(user))
-  }, [])
+    userServices.getUser(currentProfileId).then(user => setUserProfile(user))
+  }, [currentProfileId])
 
   return (
 

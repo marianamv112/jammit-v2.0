@@ -8,19 +8,16 @@ import {
 } from "@material-ui/core";
 import PageTitle from "../PageTitle";
 import InfoText from "../InfoText";
-import { validateUser } from "../../redux/actions/registerActions";
+import registerActions from "../../redux/actions/registerActions";
 import { bindActionCreators } from "redux";
-import {
-  help_text,
-  mobile_viewport,
-} from "../../config";
+import configs from "../../config";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
 const styles = () => ({
   mainContainer: {
     width: "100%",
-    [`@media (min-width: ${mobile_viewport}px && max-width: ${mobile_viewport}px)`]: {
+    [`@media (min-width: ${configs.mobile_viewport}px && max-width: ${configs.mobile_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -31,7 +28,7 @@ const styles = () => ({
     display: "flex",
     justifyContent: "space-between",
     width: 365,
-    [`@media (max-width: ${mobile_viewport}px)`]: {
+    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
       width: 300,
     },
   },
@@ -45,9 +42,10 @@ const WelcomePage = ({
   errorMessage,
   ...props
 }) => {
+  const confirmationCode = props.match.params.confirmationCode
   useEffect(() => {
-    validateUser(props.match.params.confirmationCode);
-  }, []);
+    validateUser(confirmationCode);
+  }, [validateUser, confirmationCode]);
 
   return (
     <Box
@@ -76,7 +74,7 @@ const WelcomePage = ({
               error
               content={"User validation not possible"}
             />
-            <InfoText visible={true} content={help_text} />
+            <InfoText visible={true} content={configs.help_text} />
           </Box>
         </>
       ) : (
@@ -112,7 +110,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      validateUser,
+      validateUser: registerActions.validateUser,
     },
     dispatch
   );

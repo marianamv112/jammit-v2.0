@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box, makeStyles, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import {
-  tablet_viewport,
-} from "../../config";
+import configs from "../../config";
 import addEventIcon from "../../assets/icons/plus.png";
 import SearchBar from "../SearchBar";
 import MediaControlCard from "../MediaControlCard";
 import clsx from 'clsx'
-import { getEvents, searchEvent } from "../../services/events"
+import eventServices from "../../services/events"
 import InfoText from "../InfoText"
 
 const styles = makeStyles((theme) => ({
@@ -17,7 +15,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [`@media (min-width: ${tablet_viewport}px && max-width: ${tablet_viewport}px)`]: {
+    [`@media (min-width: ${configs.tablet_viewport}px && max-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
     marginTop: 10,
@@ -27,7 +25,7 @@ const styles = makeStyles((theme) => ({
     height: "fit-content",
     minWidth: 365,
     maxWidth: 435,
-    [`@media (max-width: ${tablet_viewport}px)`]: {
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
       minWidth: 300,
       maxWidth: 370,
     },
@@ -67,16 +65,16 @@ const EventListView = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    getEvents().then((res) => {
+    eventServices.getEvents().then((res) => {
       setEvents(res.events)
     });
 }, []);
 
 const submitSearch = () => {
   if (query !== "") {
-    searchEvent(query).then(results => setEvents(results))
+    eventServices.searchEvent(query).then(results => setEvents(results))
   } else {
-    getEvents().then((res) => {
+    eventServices.getEvents().then((res) => {
       setEvents(res.events)
     });
   }
@@ -107,10 +105,8 @@ return (
       >
         <SearchBar
           className={classes.searchBar}
-          //value={this.state.value}
           onChange={(e) => setQuery(e.target.value)}
           onClick={() => submitSearch()}
-        //onRequestSearch={() => doSomethingWith(this.state.value)}
         />
         <IconButton
           component={Link}
