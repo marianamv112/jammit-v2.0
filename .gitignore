@@ -9,6 +9,7 @@
 
 # production
 /server/.env
+/client/.env
 
 
 # misc
