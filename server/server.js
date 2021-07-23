@@ -50,6 +50,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/map', mapRoutes);
 
+
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use("/api/*", (req, res, next) => {
   let err = new Error("Not Found");
@@ -57,6 +58,7 @@ app.use("/api/*", (req, res, next) => {
   next(err);
 })
 
+app.get('/', (req, res) => { res.send('Hello from Express!')
 
 // For any other routes, redirect to the index.html file of React
 app.get("*", (req, res) => {
