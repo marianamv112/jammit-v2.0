@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import ActionButton from "../ActionButton";
-import registerActions from "../../redux/actions/userActions";
+import { updateUser } from "../../redux/actions/userActions";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -68,7 +68,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const EditProfile = ({ cleanError, currentUser, updateUser, ...props }) => {
+const EditProfile = ({ currentUser, updateUser, ...props }) => {
   const classes = styles();
   const [username, setUsername] = useState(currentUser.username);
   const [missingUsername, setMissingUsername] = useState(false);
@@ -167,7 +167,6 @@ const EditProfile = ({ cleanError, currentUser, updateUser, ...props }) => {
           error={missingUsername}
           onClick={() => {
             setMissingUsername(false);
-            //cleanError();
           }}
           InputProps={{
             className: classes.input,
@@ -407,8 +406,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      cleanError: registerActions.cleanError,
-      updateUser: registerActions.updateUser,
+      updateUser,
     },
     dispatch
   );

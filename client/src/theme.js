@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import "./index.css"
 
-const theme = createMuiTheme({
+const theme = createTheme({
   root: {
     fontFamily: ["Roboto", "sans-serif"].join(","),
   },

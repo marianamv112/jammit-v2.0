@@ -22,7 +22,7 @@ const login = (email, password) => {
  
   return axios
     .post(API_URL + "/auth/login", { email, password }, { withCredentials: true })
-    .then((response) =>  { console.log("login", response.data); return response.data})
+    .then((response) =>  response.data)
 };
 
 const logout = () => {

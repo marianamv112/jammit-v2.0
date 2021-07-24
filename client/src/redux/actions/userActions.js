@@ -1,7 +1,7 @@
 import userServices from "../../services/users";
 import { push } from 'connected-react-router'
 
-const updateUser = (userId, fieldsToUpdate) => {
+export const updateUser = (userId, fieldsToUpdate) => {
   return (dispatch) => {
     dispatch({ type: "LOADING" });
     userServices.update(userId, fieldsToUpdate)
