@@ -39,6 +39,8 @@ eventRoutes.post(
     const author = req.user.id;
     let eventPicture;
 
+    console.log("I tried")
+
     if (req.file) {
       let imageFile = req.file;
       uploadFile(imageFile.buffer, imageFile.originalname, imageFile.mimetype);
