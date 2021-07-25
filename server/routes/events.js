@@ -7,7 +7,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const { isLoggedIn } = require("../middleware");
 const User = require("../models/user");
-const { default: axios } = require("axios");
 
 const uploadFile = (buffer, name, type) => {
   s3bucket = new AWS.S3({

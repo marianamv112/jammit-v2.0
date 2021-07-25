@@ -29,7 +29,7 @@ app.use(session({
   secret: process.env.SESS_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 3600000 },
+  cookie: { sameSite: "none", maxAge: 3600000 },
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
     // ttl => time to live
