@@ -62,7 +62,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const UserEvents = ({ loggedInUser }) => {
+const UserEvents = ({ loggedInUser, otherUser }) => {
   const classes = styles();
   const [events, setEvents] = useState(null);
   const userId = window.location.pathname.split("/user-events/")[1];
@@ -86,7 +86,8 @@ const UserEvents = ({ loggedInUser }) => {
         justifyContent="space-between"
         className={classes.container}
       >
-        <Box display="flex" flexDirection="row" className={classes.container}>
+        {events ? <Box display="flex" flexDirection="row" className={classes.container}>
+
           <Box className={classes.title}>
             <Typography variant="h1">
               {userId === loggedInUser.id ? loggedInUser.username : events[0].author.username}'s events
@@ -103,7 +104,7 @@ const UserEvents = ({ loggedInUser }) => {
               className={classes.iconImage}
             />
           </IconButton>
-        </Box>
+        </Box> : <CircularProgress />}
         {events ?
           events.length > 0 ?
             events.map((event) => (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper, makeStyles, Typography, IconButton, CircularProgress } from "@material-ui/core";
-import ProfilePic from "../ProfilePic";
+import { Paper, makeStyles, Typography, IconButton, CircularProgress, Box } from "@material-ui/core";
 import editProfileIcon from "../../assets/icons/edit_user_profile.png";
 import eventsIcon from "../../assets/icons/paper_colored.png";
 import facebookIcon from "../../assets/icons/facebook.png";
@@ -12,6 +11,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import userServices from "../../services/users";
+
 
 const styles = makeStyles((theme) => ({
   mainContainer: {
@@ -41,6 +41,7 @@ const styles = makeStyles((theme) => ({
   },
   iconsContainer: {
     height: "fit-content",
+
     display: "flex",
     justifyContent: "space-between",
     minWidth: 365,
@@ -83,14 +84,8 @@ const styles = makeStyles((theme) => ({
     paddingBottom: "0.3em",
     marginBottom: "0.8em",
     marginRight: "1em",
-    [`@media (min-width: ${configs.tablet_viewport}px)`]: {
-      paddingRight: "1.5em",
-      paddingLeft: "1.5em",
-    },
-    [`@media (max-width: ${configs.mobile_viewport}px)`]: {
-      paddingRight: "1em",
-      paddingLeft: "1em",
-    },
+    paddingRight: 10,
+    paddingLeft: 10,
   },
   instrumentsContainer: {
     display: "flex",
@@ -108,10 +103,23 @@ const styles = makeStyles((theme) => ({
   username: {
     textAlign: "center",
     marginTop: 100,
-    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
-      marginTop: 70
-    },
   },
+  circularFrame: {
+    position: "absolute",
+    width: 170,
+    height: 170,
+    overflow: "hidden",
+    borderRadius: "50%",
+    top: -65,
+    left: "27%",
+    [`@media (max-width: ${configs.tablet_viewport}px)`]: {
+      left: "23%",
+    }
+  },
+  image: {
+    width: "100%",
+    height: "auto",
+  }
 }));
 
 const Profile = ({ loggedInUser }) => {
@@ -134,12 +142,14 @@ const Profile = ({ loggedInUser }) => {
               to={`/user-events/${currentProfileId}`}
               className={classes.iconButton}
             >
+
               <img
                 src={eventsIcon}
                 alt="events-icon"
                 className={classes.iconImage}
               />
             </IconButton>
+
             {
               currentProfileId === loggedInUser.id &&
               <IconButton
@@ -156,7 +166,9 @@ const Profile = ({ loggedInUser }) => {
             }
           </div>
           <Paper className={classes.homePaper} elevation={6}>
-            <ProfilePic image={user.profilePicture} />
+            <Box className={classes.circularFrame}>
+              <img alt="user avatar" src={user.profilePicture} className={classes.image} />
+            </Box>
             <Typography className={clsx(classes.title, classes.username)}>
               {user && user.username}
             </Typography>

@@ -8,24 +8,19 @@ import configs from "../../config";
 import EventIcon from "@material-ui/icons/Event";
 import PlaceIcon from "@material-ui/icons/Place";
 import clsx from "clsx";
-import ReactRoundedImage from "react-rounded-image";
 import Moment from 'react-moment';
 
 
 const styles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    display: "flex",
-    justifyContent: "center",
   },
   mainContainer: {
     width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
     [`@media (min-width: ${configs.tablet_viewport}px)`]: {
       marginTop: "1em",
     },
+    marginBottom: 70,
   },
   container: {
     height: "fit-content",
@@ -49,11 +44,17 @@ const styles = makeStyles((theme) => ({
   iconImage: {
     maxWidth: "100%",
   },
-  eventPicture: {
-    maxWidth: "80%",
+  eventPictureContainer: {
+    maxHeight: 320,
+    width: "auto",
     margin: 30,
+    overflow: "hidden",
   },
-  roundFrame: {
+  eventPicture: {
+    width: "100%",
+    height: "auto",
+  },
+  authorPicture: {
     overflow: "hidden",
     width: 60,
     borderRadius: "50%",
@@ -122,11 +123,13 @@ const ViewEvent = ({ loggedInUser }) => {
           className={clsx(classes.container, classes.eventContent)}
         >
           <Box display="flex" flexDirection="column" justifyContent="center">
-            <img
-              src={event.eventPicture}
-              alt="edit-event-icon"
-              className={classes.eventPicture}
-            />
+            <Box className={classes.eventPictureContainer}>
+              <img
+                src={event.eventPicture}
+                alt="edit-event-icon"
+                className={classes.eventPicture}
+              />
+            </Box>
             <Box
               display="flex"
               flexDirection="row"
@@ -155,13 +158,10 @@ const ViewEvent = ({ loggedInUser }) => {
           flexDirection="row"
           className={clsx(classes.container, classes.title)}
         >
-          <ButtonBase component={Link} to={`/profile/${event.author._id}`}>
-            <ReactRoundedImage
-              image={event.author.profilePicture}
-              roundedSize="0"
-              imageWidth="60"
-              imageHeight="60"
-            />
+          <ButtonBase component={Link} to={`/profile/${event.author._id}`} className={classes.authorPicture}>
+            <Box>
+              <img src={event.author.profilePicture} alt="author avatar" className={classes.eventPicture} />
+            </Box>
           </ButtonBase>
           <Box
             display="flex"
